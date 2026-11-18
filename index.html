@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recall — UPSC CSE Revision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f5f1; --panel:#ffffff; --panel-h:#fcfbf8; --line:#ebe7df; --line2:#ddd7cc;
+  --ink:#2a2833; --muted:#76727f; --dim:#a39fa9;
+  --accent:#6b5fd3; --accent2:#8a80e0; --accent-soft:#eeebfc; --accent-ink:#4c42a8;
+  --again:#d9634f; --hard:#d39a2c; --good:#3d9a6c; --easy:#4f7fd0;
+  --again-bg:#fdebe7; --hard-bg:#fdf3dc; --good-bg:#e3f4ea; --easy-bg:#e6eefb;
+  --r:18px; --shadow:0 1px 2px rgba(40,30,60,.04),0 6px 20px -8px rgba(40,30,60,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:14.5px;color:var(--ink);background:var(--bg);
+  background-image:radial-gradient(900px 500px at 100% -10%,#efeafd 0,transparent 60%),radial-gradient(800px 500px at -10% 110%,#e5f3ec 0,transparent 60%);background-attachment:fixed;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif;font-weight:600;margin:0;letter-spacing:-.01em}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea,select{font:inherit;color:inherit}
+::selection{background:#ddd7fa}
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+aside{border-right:1px solid var(--line);padding:26px 16px 20px;display:flex;flex-direction:column;gap:3px;position:sticky;top:0;height:100vh;background:rgba(255,255,255,.6);backdrop-filter:blur(10px)}
+.brand{display:flex;align-items:center;gap:12px;padding:0 10px 28px}
+.emblem{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;color:#fff;font-family:Fraunces;font-size:21px;font-weight:700;background:linear-gradient(135deg,#a79cf0,#6b5fd3);box-shadow:0 6px 16px -6px rgba(107,95,211,.6)}
+.brand b{font-family:Fraunces;font-size:22px;font-weight:700;display:block;line-height:1}
+.brand small{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:block;margin-top:5px;font-weight:700}
+.navlbl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);padding:16px 12px 8px;font-weight:700}
+.nav{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:11px;color:var(--muted);font-weight:600;text-align:left;width:100%;transition:.15s}
+.nav:hover{color:var(--ink);background:#f3f1ec}
+.nav.active{color:var(--accent-ink);background:var(--accent-soft)}
+.nav svg{width:17px;height:17px;flex:none}
+.nav .count{margin-left:auto;font-size:11px;font-weight:700;color:#fff;background:var(--accent);padding:2px 8px;border-radius:20px}
+.side-card{margin-top:auto;border-radius:16px;padding:16px;background:linear-gradient(135deg,#fde9df,#fbe1ea);border:1px solid #f6d7d0}
+.side-card .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#a0584a;font-weight:700}
+.side-card .v{font-family:Fraunces;font-size:40px;font-weight:600;color:#7d3a2e;line-height:1.05;margin-top:6px}
+.side-card .s{font-size:12px;color:#a0584a}
+.linkbtn{font-size:12px;color:var(--dim);margin-top:12px;padding:4px 12px;text-align:left}
+.linkbtn:hover{color:var(--muted)}
+
+main{padding:40px 48px 70px;max-width:1160px;width:100%}
+.eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:30px;flex-wrap:wrap}
+.head h1{font-size:40px;line-height:1.08;margin-top:8px}
+.head h1 em{font-style:italic;color:var(--accent);font-weight:500}
+.head p{margin:10px 0 0;color:var(--muted);max-width:580px;line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:11px 18px;border-radius:12px;font-weight:700;font-size:14px;background:#fff;border:1px solid var(--line2);color:var(--ink);transition:.15s}
+.btn:hover{border-color:#c9c2b5;background:#fbfaf7}
+.btn.gold{background:var(--accent);color:#fff;border:none;box-shadow:0 8px 20px -10px rgba(107,95,211,.8)}
+.btn.gold:hover{background:#5d51c6}
+.btn.sm{padding:7px 12px;font-size:12.5px;border-radius:10px}
+.btn[disabled]{opacity:.4;cursor:default;pointer-events:none}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+
+.hero{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.today{position:relative;overflow:hidden;padding:26px 28px;background:linear-gradient(135deg,#eeebfc,#f6f3ff 55%,#fff);border-color:#e1dcf8}
+.today .big{font-family:Fraunces;font-size:60px;font-weight:600;line-height:1;margin:10px 0 4px;color:#3a3270}
+.today .big small{font-size:20px;color:var(--muted);font-weight:500}
+.today p{color:var(--muted);margin:0 0 20px}
+.today::after{content:"";position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#ddd6fb,transparent 70%)}
+.count-card{position:relative;overflow:hidden}
+.count-card.c1{background:linear-gradient(135deg,#fde9df,#fff 70%);border-color:#f6dcd1}
+.count-card.c2{background:linear-gradient(135deg,#e1f3ea,#fff 70%);border-color:#d3ebdf}
+.count-card .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.count-card .days{font-family:Fraunces;font-size:54px;font-weight:600;line-height:1;margin-top:12px}
+.count-card.c1 .days{color:#b0523e}.count-card.c2 .days{color:#2f7d58}
+.count-card .days span{font-size:16px;color:var(--muted);margin-left:6px;font-family:"Plus Jakarta Sans";font-weight:600}
+.count-card .date{font-size:12.5px;color:var(--muted);margin-top:8px}
+.count-card .track{height:5px;background:rgba(0,0,0,.05);border-radius:5px;margin-top:16px;overflow:hidden}
+.count-card.c1 .track i{background:#eda08d}.count-card.c2 .track i{background:#8fcfac}
+.count-card .track i{display:block;height:100%;border-radius:5px}
+.kpis{grid-template-columns:repeat(4,1fr)}
+.kpi .lbl{font-size:12px;color:var(--muted);font-weight:600}
+.kpi .num{font-family:Fraunces;font-size:34px;font-weight:600;margin-top:4px;line-height:1.1}
+.kpi .sub{font-size:11.5px;color:var(--dim)}
+.section-title{display:flex;justify-content:space-between;align-items:baseline;margin:38px 0 16px;gap:12px;flex-wrap:wrap}
+.section-title h2{font-size:26px}
+.section-title .muted{font-size:12.5px}
+
+.papers{grid-template-columns:repeat(3,1fr)}
+.paper{display:flex;align-items:center;gap:16px}
+.ring{width:66px;height:66px;flex:none;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:Fraunces;font-size:18px;font-weight:600}
+.paper h3{font-size:20px}
+.paper .muted{font-size:12px;line-height:1.4;margin-top:2px}
+
+.decks{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.deck{display:flex;flex-direction:column;gap:14px;transition:.18s;position:relative;overflow:hidden;background:linear-gradient(160deg,var(--bgc) 0,#fff 46%)}
+.deck:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(40,30,60,.22)}
+.deck .top{display:flex;gap:14px;align-items:flex-start}
+.glyph{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none;font-family:Fraunces;font-size:20px;font-weight:700;color:var(--c);background:var(--bgc);border:1px solid color-mix(in srgb,var(--c) 22%,transparent)}
+.deck h3{font-size:21px;line-height:1.15}
+.deck .meta{font-size:12px;color:var(--muted);margin-top:3px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:#f3f1ec;color:var(--muted)}
+.tag.gs{color:var(--accent-ink);background:var(--accent-soft)}
+.tag.due{color:#b9473a;background:var(--again-bg)}
+.tag.new{color:#3c66b3;background:var(--easy-bg)}
+.bar{height:6px;background:#f0ede6;border-radius:6px;overflow:hidden}
+.bar>i{display:block;height:100%;border-radius:6px;background:var(--c,var(--accent))}
+.deck .foot{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:7px}
+.deck .actions{display:flex;gap:8px;margin-top:auto}
+.deck .btn.gold{background:var(--c);box-shadow:0 8px 18px -10px var(--c)}
+.deck .btn.gold:hover{filter:brightness(.94)}
+
+.heat{display:grid;grid-template-rows:repeat(7,11px);grid-auto-flow:column;grid-auto-columns:11px;gap:3px;overflow-x:auto;padding-bottom:4px}
+.heat i{border-radius:3px;background:#f0ede6}
+.heat i.l1{background:#dcd6fa}.heat i.l2{background:#b7adf2}.heat i.l3{background:#8f82e4}.heat i.l4{background:#6b5fd3}
+.legend{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);margin-top:10px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+.study-wrap{max-width:780px;margin:0 auto}
+.study-top{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.study-top .bar{flex:1}
+.study-top .bar i{background:linear-gradient(90deg,#a79cf0,#6b5fd3)}
+.flash{background:#fff;color:var(--ink);border-radius:24px;min-height:360px;padding:56px 56px 40px;display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative;border:1px solid var(--line);
+  box-shadow:0 30px 60px -30px rgba(60,40,110,.25),0 2px 6px rgba(40,30,60,.04)}
+.flash::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:24px 24px 0 0;background:var(--c,var(--accent));opacity:.55}
+.flash .q{font-family:Fraunces;font-size:32px;font-weight:600;line-height:1.28}
+.flash .a{margin-top:28px;padding-top:26px;border-top:1px dashed var(--line2);font-size:17px;line-height:1.65;white-space:pre-wrap;color:#3d3a45}
+.flash .src{margin-top:16px;color:var(--dim);font-style:italic;font-family:Fraunces;font-size:15px}
+.flash .corner{position:absolute;top:24px;left:28px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c,var(--muted));font-weight:700}
+.flash .corner2{position:absolute;top:21px;right:26px;display:flex;gap:6px}
+.flash .ptag{font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:20px;background:#f3f1ec;color:var(--muted)}
+.flash .ptag.gold{background:#fdf1d2;color:#9a6f10}
+.rate{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.rate button{padding:14px 6px 12px;border-radius:14px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.15s;border:1px solid transparent}
+.rate button small{font-weight:600;font-size:12px;opacity:.75}
+.rate button:hover{transform:translateY(-2px);border-color:currentColor}
+.rate .r1{color:#b9473a;background:var(--again-bg)}.rate .r2{color:#9a6f10;background:var(--hard-bg)}.rate .r3{color:#2b7a52;background:var(--good-bg)}.rate .r4{color:#3c66b3;background:var(--easy-bg)}
+.kbd{font-size:10.5px;border:1px solid var(--line2);border-radius:5px;padding:1px 6px;color:var(--muted);font-weight:700;background:#fff}
+.reveal{width:100%;margin-top:18px;padding:16px;font-size:15px}
+.hint{color:var(--dim);text-align:center;font-size:12.5px;margin-top:14px}
+.done{text-align:center;padding:64px 24px}
+.done .seal{width:84px;height:84px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:36px;background:linear-gradient(135deg,#8fcfac,#3d9a6c);box-shadow:0 0 0 10px #e3f4ea}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.chip{padding:8px 14px;border-radius:30px;border:1px solid var(--line2);font-size:13px;font-weight:700;color:var(--muted);background:#fff;transition:.12s}
+.chip:hover{color:var(--ink)}
+.chip.on{background:var(--accent-soft);border-color:#cfc8f6;color:var(--accent-ink)}
+
+label{display:block;font-size:12px;font-weight:700;letter-spacing:.03em;margin:16px 0 7px;color:var(--muted)}
+input[type=text],input[type=number],textarea,select{width:100%;padding:11px 13px;border:1px solid var(--line2);border-radius:12px;background:#fff}
+textarea{min-height:88px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.drop{border:2px dashed #cfc8f6;border-radius:var(--r);padding:44px 30px;text-align:center;background:linear-gradient(180deg,#f6f4ff,#fff);transition:.15s}
+.drop.over{background:var(--accent-soft);border-color:var(--accent)}
+.drop h3{font-size:24px;margin-bottom:6px}
+.muted{color:var(--muted)}
+.two{grid-template-columns:1.25fr 1fr}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:10.5px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+tr:last-child td{border-bottom:none}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;padding:9px 0 9px 40px;position:relative;line-height:1.5}
+.steps li::before{content:counter(s);position:absolute;left:0;top:8px;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;font-size:12px;font-weight:800}
+code{background:#f3f1ec;padding:1px 6px;border-radius:5px;font-size:12.5px}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;opacity:0;transition:.25s;pointer-events:none;z-index:60;box-shadow:0 20px 40px -20px rgba(0,0,0,.4)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal-bg{position:fixed;inset:0;background:rgba(42,40,51,.28);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:40;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:22px;padding:28px;width:min(560px,100%);max-height:90vh;overflow:auto;box-shadow:0 40px 80px -30px rgba(40,30,60,.4)}
+.modal h2{font-size:28px}
+.modal .row{display:flex;justify-content:flex-end;gap:8px;margin-top:22px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+
+/* revise popup */
+.rv-head{display:flex;gap:14px;align-items:center;margin-bottom:6px}
+.rv-sec{margin-top:22px}
+.rv-sec .lbl{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.rv-sec .lbl button{font-size:12px;font-weight:700;color:var(--accent);text-transform:none;letter-spacing:0}
+.counts{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.counts .chip{min-width:56px}
+.counts input{width:92px;padding:8px 10px;border-radius:30px;text-align:center}
+.topics-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:280px;overflow:auto;padding:2px}
+.topic{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font-size:13.5px;font-weight:600;transition:.12s;user-select:none;margin:0;color:var(--ink);letter-spacing:0}
+.topic:hover{border-color:var(--line2)}
+.topic input{display:none}
+.topic .box{width:18px;height:18px;border-radius:6px;border:1.5px solid var(--line2);flex:none;display:grid;place-items:center;font-size:11px;color:#fff}
+.topic.on{background:var(--bgc,var(--accent-soft));border-color:color-mix(in srgb,var(--c,var(--accent)) 35%,transparent)}
+.topic.on .box{background:var(--c,var(--accent));border-color:var(--c,var(--accent))}
+.topic.on .box::after{content:"✓"}
+.topic .n{margin-left:auto;white-space:nowrap;font-size:11.5px;color:var(--muted);font-weight:700}
+.topic .d{font-size:10.5px;color:#b9473a;font-weight:800;margin-left:6px}
+.rv-sum{margin-top:20px;padding:14px 16px;border-radius:14px;background:#f7f5f1;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.rv-sum b{color:var(--ink);font-size:15px}
+.seg{display:inline-flex;background:#f3f1ec;border-radius:12px;padding:3px;gap:2px}
+.seg button{padding:7px 12px;border-radius:9px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+
+/* card grid (library) */
+.gchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.gchip{padding:5px 11px;border-radius:20px;font-size:12px;font-weight:700;background:#fff;border:1px solid var(--line2);color:var(--muted)}
+.gchip b{color:var(--gink);margin-left:3px}
+.gchip.on{background:var(--gbg);color:var(--gink);border-color:transparent}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.tile{position:relative;background:#fff;border-radius:16px;border:2px solid var(--gbg);box-shadow:var(--shadow);display:flex;flex-direction:column;height:380px;overflow:hidden;cursor:pointer;transition:.15s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 16px 30px -16px rgba(40,30,60,.3)}
+.tile-h{background:var(--gbg);display:flex;align-items:center;gap:8px;padding:6px 12px;min-height:38px}
+.tile-g{margin-left:auto;font-family:Fraunces;font-weight:700;font-size:18px;color:var(--gink);padding:2px 10px;border-radius:10px}
+.tile-pyq{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:12px;background:rgba(255,255,255,.65);color:#9a6f10;letter-spacing:.04em}
+.star{font-size:20px;line-height:1;color:rgba(0,0,0,.18);padding:2px;transition:.12s}
+.star:hover{color:#e8b400;transform:scale(1.15)}.star.on{color:#f2b705;text-shadow:0 1px 0 rgba(150,100,0,.3)}
+.tile-b{flex:1;overflow:hidden;padding:12px 16px 0;position:relative;font-size:13px;line-height:1.5}
+.tile-b::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(transparent,#fff)}
+.tile-q{text-align:center;font-weight:600;font-size:15px;line-height:1.4;color:var(--ink)}
+.tile-q ol,.tile-q ul,.tile-q table{text-align:left;font-weight:500}
+.tile-b hr{border:none;border-top:1px solid var(--line);margin:12px 0}
+.tile-a{color:#3d3a45}
+.tile-b p{margin:0 0 6px}.tile-b p:empty{display:none}
+.tile-b h1,.tile-b h2,.tile-b h3,.tile-b h4{font-size:13.5px;margin:2px 0 6px;font-family:"Plus Jakarta Sans"}
+.tile-b ul,.tile-b ol{padding-left:18px;margin:4px 0}
+.tile-b img{display:block;max-width:100%;max-height:150px;margin:6px auto;border-radius:8px;border:1px solid var(--line)}
+.tile-b table{border-collapse:collapse;font-size:11.5px;width:100%}.tile-b td,.tile-b th{border:1px solid var(--line2);padding:3px 5px;text-transform:none;letter-spacing:0;font-size:11.5px;color:inherit}
+.tile-b a.extimg{font-size:12px;color:var(--accent-ink)}
+.tile-f{display:flex;gap:5px;flex-wrap:wrap;padding:10px 12px 12px;border-top:1px solid var(--line);max-height:66px;overflow:hidden}
+.tile-f span{font-size:11px;font-weight:700;padding:3px 9px;border-radius:14px;background:#f3f1ec;color:var(--muted)}
+.tile-edit{position:absolute;right:10px;bottom:10px;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:6px 11px;border-radius:9px;opacity:0;transform:translateY(4px);transition:.15s}
+.tile:hover .tile-edit{opacity:1;transform:none}
+@media (hover:none){.tile-edit{opacity:1;transform:none}}
+/* editor */
+.modal.wide{width:min(820px,100%)}
+.modal.wide .row{position:sticky;bottom:-28px;background:#fff;padding:14px 0 18px;margin:18px 0 -18px;border-top:1px solid var(--line);z-index:2}
+.ed-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ed-tools{display:flex;gap:4px;flex-wrap:wrap;background:#f7f5f1;border:1px solid var(--line2);border-bottom:none;border-radius:12px 12px 0 0;padding:5px}
+.ed-tools button{padding:5px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink)}
+.ed-tools button:hover{background:#fff}
+.ed-tools .sep{width:1px;background:var(--line2);margin:3px 4px}
+.ed{min-height:90px;max-height:300px;overflow:auto;border:1px solid var(--line2);border-radius:0 0 12px 12px;padding:12px 14px;font-size:14.5px;line-height:1.6;background:#fff}
+.ed:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ed.rich img{max-height:220px;cursor:default}
+.ed-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--line2);border-radius:12px;padding:7px 8px;background:#fff}
+.ed-tags input{flex:1;min-width:150px;border:none;padding:5px;outline:none;box-shadow:none}
+.etag{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;padding:4px 6px 4px 11px;border-radius:20px;background:var(--bgc,var(--accent-soft));color:var(--c,var(--accent-ink))}
+.etag button{width:18px;height:18px;border-radius:50%;font-size:13px;line-height:1;color:inherit;opacity:.7}
+.etag button:hover{opacity:1;background:rgba(255,255,255,.6)}
+.ed-meta{margin-top:16px;font-size:12.5px;color:var(--muted)}
+.linkish{color:var(--accent);font-weight:700;font-size:12.5px}
+.btn.danger{color:#b9473a;border-color:#f1c9c1}
+.btn.danger:hover{background:var(--again-bg)}
+.btn.danger.armed{background:#d9634f;color:#fff;border-color:#d9634f}
+.flash .ptag.editp,.flash .ptag.star-s{cursor:pointer;border:none;font-family:inherit}
+.flash .ptag.editp:hover{background:var(--accent-soft);color:var(--accent-ink)}
+.flash .ptag.star-s{color:rgba(0,0,0,.25);font-size:12px}.flash .ptag.star-s.on{color:#f2b705;background:#fff6cf}
+
+/* image lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(30,28,40,.82);z-index:70;display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+.lightbox.show{display:flex}
+.lightbox img{max-width:100%;max-height:100%;border-radius:12px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.lightbox span{position:absolute;top:16px;right:22px;color:#fff;font-size:13px;font-weight:700;opacity:.8}
+/* rich HTML card content */
+.flash .q.rich{font-family:"Plus Jakarta Sans",sans-serif;font-size:18px;font-weight:500;line-height:1.6;text-align:left}
+.flash .q.rich.short{font-family:Fraunces,serif;font-size:30px;font-weight:600;line-height:1.28;text-align:center}
+.flash .a.rich{white-space:normal;text-align:left;font-size:16px}
+.rich p{margin:0 0 8px}.rich p:empty{display:none}
+.rich h1,.rich h2,.rich h3,.rich h4{font-family:"Plus Jakarta Sans",sans-serif;font-size:17px;font-weight:800;margin:4px 0 10px}
+.rich ol,.rich ul{margin:6px 0 10px;padding-left:22px}.rich li{margin:4px 0}
+.rich strong,.rich b{font-weight:800;color:#24222b}
+.rich img{cursor:zoom-in;display:block;max-width:100%;max-height:520px;margin:10px auto;border-radius:12px;border:1px solid var(--line);background:#fff}
+.rich table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+.rich th,.rich td{border:1px solid var(--line2);padding:7px 9px;color:#33303b;text-transform:none;letter-spacing:0;font-size:14px}
+.rich th{background:#f7f5f1;font-weight:800}
+.rich a{color:var(--accent-ink);font-weight:700}
+.rich a.extimg{display:inline-block;margin:8px 0;padding:9px 14px;border-radius:12px;background:var(--accent-soft);text-decoration:none;font-size:14px}
+.flash .topics{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+.flash .topics span{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--bgc,#f3f1ec);color:var(--c,var(--muted));font-weight:700}
+.thumb{font-size:11px;color:var(--accent);font-weight:700}
+.searchbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.searchbar input{max-width:320px}
+
+@media (max-width:980px){.hero{grid-template-columns:1fr 1fr}.today{grid-column:1/-1}.papers{grid-template-columns:1fr}}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  aside{position:static;height:auto;flex-direction:row;overflow-x:auto;padding:10px;border-right:none;border-bottom:1px solid var(--line)}
+  .brand,.side-card,.navlbl,.linkbtn{display:none}
+  .nav{width:auto;white-space:nowrap}
+  main{padding:26px 18px 60px}
+  .head h1{font-size:32px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .two,.frow,.topics-list{grid-template-columns:1fr}
+  .flash{padding:50px 24px 30px}.flash .q{font-size:25px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="emblem">R</div><div><b>Recall</b><small>UPSC CSE 2027</small></div></div>
+    <button class="nav" data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Today<span class="count" id="navDue">0</span></button>
+    <button class="nav" data-view="revise"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4v6h6M20 20v-6h-6"/><path d="M20 10A8 8 0 0 0 6 6L4 8M4 14a8 8 0 0 0 14 4l2-2"/></svg>Revise</button>
+    <button class="nav" data-view="decks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v12"/></svg>Subjects</button>
+    <button class="nav" data-view="browse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>Card library</button>
+    <div class="navlbl">Tools</div>
+    <button class="nav" data-view="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Insights</button>
+    <div class="side-card"><div class="k">Prelims in</div><div class="v" id="sideDays">—</div><div class="s">days · 23 May 2027</div></div>
+    <button class="linkbtn" id="resetBtn">Reset all progress</button>
+  </aside>
+  <main id="main"></main>
+</div>
+<div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('show')"><span>Tap anywhere to close · Esc</span><img alt=""></div>
+
+<script>
+/* ============ constants ============ */
+const KEY='recall-upsc-v6', DAY=86400000, MIN=60000;
+const PRELIMS=new Date('2027-05-23T09:30:00+05:30').getTime();
+const MAINS=new Date('2027-08-20T09:00:00+05:30').getTime();
+const CYCLE_START=new Date('2026-06-01T00:00:00+05:30').getTime();
+const PAPERS={
+  GS1:{name:'GS I',desc:'History, Culture, Geography'},
+  GS2:{name:'GS II',desc:'Polity, Governance, International Relations'},
+  GS3:{name:'GS III',desc:'Economy, Science & Tech, Environment'},
+};
+/* the 9 subjects — pastel background (bg) + deeper ink colour (c). `file` = a deck shipped with the page */
+const SUBJECTS=[
+  {key:'polity',   name:'Polity',                 glyph:'⚖', c:'#5a63c9', bg:'#e7e9fb', paper:'GS2', file:'polity.json'},
+  {key:'economy',  name:'Economy',                glyph:'₹', c:'#a8770f', bg:'#fcefcc', paper:'GS3'},
+  {key:'modern',   name:'Modern History',         glyph:'M', c:'#c25a3e', bg:'#fde3d9', paper:'GS1'},
+  {key:'geography',name:'Geography',              glyph:'G', c:'#2f8a62', bg:'#daf2e5', paper:'GS1', file:'geography.json'},
+  {key:'mapping',  name:'Mapping',                glyph:'⌖', c:'#2f72b3', bg:'#dbebfa', paper:'GS1'},
+  {key:'amac',     name:'AMAC',  full:'Ancient, Medieval & Art and Culture', glyph:'A', c:'#b5487a', bg:'#fbe0ea', paper:'GS1'},
+  {key:'ir',       name:'International Relations',glyph:'IR',c:'#23808b', bg:'#d6f0f2', paper:'GS2'},
+  {key:'st',       name:'Science & Tech',         glyph:'S', c:'#7c4fb8', bg:'#ece2f8', paper:'GS3'},
+  {key:'env',      name:'Environment',            glyph:'E', c:'#5b8a2c', bg:'#e4f1d4', paper:'GS3'},
+];
+const CLEAN_TAGS=['Marked','New from notes']; // labels that show prior use – removed for a fresh start
+const uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function load(){try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}return null}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+
+/* ============ seed data ============ */
+function seed(){
+  const now=Date.now();
+  const decks=SUBJECTS.map(s=>({id:s.key,...s}));
+  const cards=[];
+  const C=(deckId,front,back,topic,stage,age)=>{
+    const c={id:uid(),deckId,front,back,tags:[topic],stage,state:'new',s:0,d:5,due:now,reps:0,lapses:0,last:null};
+    cards.push(c);
+  };
+  // Economy
+  C('economy','What is the repo rate?','The rate at which the RBI lends short-term funds to commercial banks against government securities.','Monetary Policy','',5);
+  C('economy','Who chairs the Monetary Policy Committee, and how many members does it have?','The RBI Governor; six members (three from the RBI, three appointed by the Centre).','Monetary Policy','');
+  C('economy','How is fiscal deficit calculated?','Total expenditure − (revenue receipts + non-debt capital receipts). It shows the government’s total borrowing requirement.','Public Finance','',11);
+  C('economy','What does the GDP deflator measure?','The price level of all final goods and services in the economy: (nominal GDP ÷ real GDP) × 100.','National Income','');
+  C('economy','What is the Cash Reserve Ratio (CRR)?','The share of a bank’s net demand and time liabilities that it must keep as cash with the RBI.','Banking','',7);
+  // Modern History
+  C('modern','When and where was the INC founded, and who was its first president?','1885, Bombay — W.C. Bonnerjee presided over the first session.','Moderate Phase','',7);
+  C('modern','Who announced the Partition of Bengal, and when?','Lord Curzon, 1905.','Swadeshi Movement','',15);
+  C('modern','Who founded the Servants of India Society?','Gopal Krishna Gokhale, in 1905.','Social Reform','',3);
+  C('modern','At which session was the Purna Swaraj resolution passed?','Lahore Session, December 1929, presided over by Jawaharlal Nehru.','Gandhian Era','');
+  C('modern','Where was Gandhi’s first satyagraha in India?','Champaran, Bihar (1917) — against forced indigo cultivation.','Gandhian Era','');
+  C('modern','Who led the Revolt of 1857 at Kanpur?','Nana Saheb, adopted son of Peshwa Baji Rao II.','Revolt of 1857','');
+  // Mapping
+  C('mapping','Which strait separates India and Sri Lanka?','Palk Strait.','Straits & Passes','',6);
+  C('mapping','Which places does the Zoji La pass connect?','The Kashmir Valley (Srinagar) and Ladakh (Leh).','Straits & Passes','',2);
+  C('mapping','The Strait of Hormuz connects which two water bodies?','The Persian Gulf and the Gulf of Oman.','Straits & Passes','');
+  C('mapping','Kaziranga National Park is in which state, and what is it known for?','Assam — the one-horned rhinoceros.','National Parks','',9);
+  C('mapping','Which river is called the “Dakshin Ganga”?','The Godavari.','Rivers','');
+  C('mapping','Which west-flowing river runs through a rift valley between the Vindhyas and Satpuras?','The Narmada, which drains into the Arabian Sea.','Rivers','');
+  // AMAC
+  C('amac','Kathakali is the classical dance of which state?','Kerala.','Dance & Music','',4);
+  C('amac','Who built the Sun Temple at Konark?','King Narasimhadeva I of the Eastern Ganga dynasty, 13th century.','Temple Architecture','',10);
+  C('amac','The Kailasa temple at Ellora was built under which dynasty?','The Rashtrakutas — a monolithic rock-cut temple in the Dravidian style.','Temple Architecture','');
+  C('amac','The Ajanta caves are mainly associated with which religion?','Buddhism.','Buddhism','');
+  C('amac','The Great Bath was found at which Harappan site?','Mohenjo-daro.','Indus Valley','',1);
+  C('amac','Who founded the Vijayanagara Empire, and when?','Harihara and Bukka, in 1336.','Medieval India','');
+  // IR
+  C('ir','How many members does BIMSTEC have?','Seven — Bangladesh, Bhutan, India, Myanmar, Nepal, Sri Lanka and Thailand.','Groupings','',5);
+  C('ir','Which countries make up the Quad?','India, the United States, Japan and Australia.','Groupings','');
+  C('ir','Which countries were the original BRIC members?','Brazil, Russia, India and China. South Africa joined in 2010.','Groupings','');
+  C('ir','Name the five permanent members of the UN Security Council.','USA, UK, France, Russia and China.','United Nations','',8);
+  C('ir','The Panchsheel Agreement (1954) was signed between which countries?','India and China.','Neighbourhood','');
+  // S&T
+  C('st','Where did Chandrayaan-3’s lander touch down, and when?','Near the lunar south pole, on 23 August 2023.','Space','',3);
+  C('st','Where is Aditya-L1 positioned?','Around the Sun–Earth Lagrange point L1, about 1.5 million km from Earth.','Space','');
+  C('st','What is CRISPR-Cas9?','A gene-editing tool that uses a guide RNA and the Cas9 enzyme to cut DNA at a precise location.','Biotechnology','');
+  C('st','BrahMos is a joint venture between India and which country?','Russia.','Defence','',12);
+  // Environment
+  C('env','When and where was the Ramsar Convention signed?','1971, in Ramsar, Iran — for the conservation of wetlands.','International Conventions','',6);
+  C('env','What does the Kigali Amendment to the Montreal Protocol target?','Phasing down hydrofluorocarbons (HFCs). Adopted in 2016.','International Conventions','');
+  C('env','India’s first Biosphere Reserve?','Nilgiri Biosphere Reserve, 1986.','Protected Areas','',20);
+  C('env','Which biodiversity hotspots fall (wholly or partly) in India?','Four — the Himalaya, Indo-Burma, Western Ghats & Sri Lanka, and Sundaland (Nicobar Islands).','Biodiversity','');
+  const log={}; // starts empty – fills as you revise
+  return {decks,cards,log,newPerDay:12,dailyGoal:60};
+}
+/* decks shipped with the page as JSON + media/ (your exports, converted) */
+async function addShippedDecks(target){
+  for(const s of SUBJECTS.filter(s=>s.file)){
+    try{
+      const g=await (await fetch(s.file)).json(), now=Date.now();
+      g.cards.forEach((c,i)=>{
+        const topics=c.tags.filter(t=>!CLEAN_TAGS.includes(t)); // drop AlgoApp 'Marked' etc.
+        const card={id:uid(),deckId:s.key,front:c.front,back:c.back,html:true,tags:topics,stage:topics.some(t=>/cds|pyq|upsc/i.test(t))?'PYQ':'',state:'new',s:0,d:5,due:now,reps:0,lapses:0,last:null};
+        target.cards.push(card);
+      });
+    }catch(e){ console.log('[recall] could not load',s.file,e); }
+  }
+}
+let db=load();
+
+/* ============ scheduler (FSRS-style, simplified) ============ */
+const W_INIT=[0.4,1.2,3.2,15.7];
+const retr=(c,now)=>!c.last?1:Math.pow(1+((now-c.last)/DAY)/(9*c.s),-1);
+function preview(c,g,now=Date.now()){
+  const n={...c};
+  if(c.state==='new'){ n.s=W_INIT[g-1]; n.d=Math.min(10,Math.max(1,5-(g-3)*1.2)); }
+  else{
+    const R=retr(c,now); n.d=Math.min(10,Math.max(1,c.d-0.8*(g-3)));
+    if(g===1){ n.s=Math.max(0.2,0.5*Math.pow(c.d,-0.3)*(Math.pow(c.s+1,0.4)-1)*Math.exp((1-R)*1.5)); n.lapses=c.lapses+1; }
+    else{ const mod=g===2?0.55:g===4?1.4:1; n.s=c.s*(1+Math.exp(1.2)*(11-n.d)*Math.pow(c.s,-0.2)*(Math.exp((1-R)*1.1)-1)*mod*0.9+(g===2?0.1:0.35)); }
+  }
+  const ivl=g===1?10*MIN:Math.max(DAY*(g===2&&c.state==='new'?1:Math.round(n.s)||1),DAY);
+  n.due=now+ivl; n.ivl=ivl; n.last=now; n.reps=c.reps+1; n.state=g===1?'learning':'review';
+  return n;
+}
+function fmtIvl(ms){ if(ms<DAY)return Math.round(ms/MIN)+' min'; const d=ms/DAY; if(d<31)return Math.round(d)+(Math.round(d)===1?' day':' days'); if(d<365)return (d/30).toFixed(1).replace('.0','')+' mo'; return (d/365).toFixed(1)+' yr'; }
+
+/* ============ queries ============ */
+const deckOf=id=>db.decks.find(d=>d.id===id);
+const topicsOf=c=>c.tags&&c.tags.length?c.tags:['General'];
+const cardsFor=f=>db.cards.filter(c=>{const d=deckOf(c.deckId); if(!d)return false; if(f&&f.deck)return c.deckId===f.deck; if(f&&f.paper)return d.paper===f.paper; return true;});
+const isDue=(c,now=Date.now())=>c.state!=='new'&&c.due<=now;
+function counts(f){
+  const now=Date.now(), cs=cardsFor(f);
+  const due=cs.filter(c=>isDue(c,now)).length, nw=cs.filter(c=>c.state==='new').length;
+  return {total:cs.length,due,new:nw,newToday:Math.min(nw,db.newPerDay),mature:cs.filter(c=>c.state==='review'&&c.s>=21).length,learned:cs.filter(c=>c.state!=='new').length};
+}
+const todayKey=()=>new Date().toISOString().slice(0,10);
+function streak(){let s=0;for(let i=0;i<500;i++){const k=new Date(Date.now()-i*DAY).toISOString().slice(0,10);if(db.log[k])s++;else if(i>0)break;}return s;}
+const daysTo=t=>Math.max(0,Math.ceil((t-Date.now())/DAY));
+
+/* ============ UI plumbing ============ */
+const $=s=>document.querySelector(s);
+const OK_TAGS=new Set(['P','BR','B','STRONG','I','EM','U','S','SUB','SUP','SPAN','DIV','H1','H2','H3','H4','H5','H6','UL','OL','LI','TABLE','THEAD','TBODY','TR','TH','TD','IMG','BLOCKQUOTE','HR','CODE','PRE','MARK','FONT']);
+function sanitize(htmlStr){
+  const doc=new DOMParser().parseFromString('<div>'+htmlStr+'</div>','text/html'); const rootEl=doc.body.firstChild;
+  (function walk(el){
+    [...el.children].forEach(ch=>{
+      // images hosted on other websites can't load inside the portal → turn them into a link
+      if(ch.tagName==='IMG'&&/^https?:\/\//i.test(ch.getAttribute('src')||'')){
+        const a=doc.createElement('a'); a.href=ch.getAttribute('src'); a.target='_blank'; a.rel='noopener'; a.className='extimg';
+        a.textContent='🖼 Open image'+(ch.getAttribute('alt')?' — '+ch.getAttribute('alt').replace(/\s*-\s*$/,''):'')+' ↗'; ch.replaceWith(a); return;
+      }
+      if(ch.tagName==='A'){const href=ch.getAttribute('href')||''; if(/^https?:\/\//i.test(href)){[...ch.attributes].forEach(x=>{if(!['href','class'].includes(x.name))ch.removeAttribute(x.name)}); ch.target='_blank'; ch.rel='noopener'; walk(ch); return;} }
+      if(!OK_TAGS.has(ch.tagName)){ if(['SCRIPT','STYLE','IFRAME','OBJECT','EMBED','LINK','META'].includes(ch.tagName)){ch.remove();return} ch.replaceWith(...ch.childNodes); return walk(el); }
+      [...ch.attributes].forEach(a=>{const n=a.name.toLowerCase();
+        const keep=(ch.tagName==='IMG'&&(n==='src'||n==='alt'))||n==='colspan'||n==='rowspan';
+        if(!keep||(n==='src'&&!/^(media\/[0-9a-f]+\.webp|data:image\/)/i.test(a.value)))ch.removeAttribute(a.name);});
+      walk(ch);
+    });
+  })(rootEl);
+  return rootEl.innerHTML;
+}
+const plain=h=>{const d=document.createElement('div');d.innerHTML=sanitize(h||'');return (d.textContent||'').replace(/\s+/g,' ').trim()};
+const hasImg=h=>/<img/i.test(h||'');
+function cardHTML(c,side){ const v=side==='front'?c.front:c.back; return c.html?sanitize(v):esc(v); }
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2400)}
+function modal(h,cls){const m=$('#modal');m.className='modal'+(cls?' '+cls:'');m.innerHTML=h;$('#modalBg').classList.add('show')}
+function closeModal(){$('#modalBg').classList.remove('show')}
+$('#modalBg').addEventListener('click',e=>{if(e.target.id==='modalBg')closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();$('#lightbox').classList.remove('show')}});
+// tap any card image to see it full size (mind maps, scanned questions)
+document.addEventListener('click',e=>{const im=e.target.closest('.rich img'); if(!im||im.closest('.ed'))return; const lb=$('#lightbox'); lb.querySelector('img').src=im.src; lb.classList.add('show');});
+const VIEWS=['home','revise','decks','browse','stats'];
+let view='home', studyState=null, browseDeck='', reviseFilter='all', browseQ='', browseTopic='';
+function go(v,arg){view=v; if(v!=='study')studyState=null; if(v==='browse'&&arg!==undefined){browseDeck=arg;browseTopic='';} closeModal(); render(); if(VIEWS.includes(v)){try{history.replaceState(null,'','#'+v)}catch(e){}} window.scrollTo(0,0);}
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>go(b.dataset.view));
+const deckVars=d=>d?`--c:${d.c};--bgc:${d.bg}`:'';
+
+function render(){
+  document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.view===view||(view==='study'&&b.dataset.view==='revise')));
+  const k=counts(); $('#navDue').textContent=k.due+k.newToday; $('#sideDays').textContent=daysTo(PRELIMS);
+  $('#main').innerHTML = view==='home'?homeView(): view==='revise'?reviseView(): view==='decks'?decksView(): view==='browse'?browseView(): view==='stats'?statsView(): studyView();
+}
+
+function ring(pct,color,bg){const r=28,c=2*Math.PI*r;return `<div class="ring"><svg width="66" height="66"><circle cx="33" cy="33" r="${r}" stroke="${bg||'#efedf8'}" stroke-width="6" fill="none"/><circle cx="33" cy="33" r="${r}" stroke="${color}" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct/100)}"/></svg><b>${pct}%</b></div>`}
+
+function deckTile(d){
+  const k=counts({deck:d.id}), pct=k.total?Math.round(k.learned/k.total*100):0;
+  const nTopics=new Set(cardsFor({deck:d.id}).flatMap(topicsOf)).size;
+  return `<div class="panel deck" style="${deckVars(d)}">
+    <div class="top"><div class="glyph">${esc(d.glyph)}</div>
+      <div style="flex:1;min-width:0"><h3>${esc(d.name)}</h3><div class="meta">${d.full?esc(d.full)+' · ':''}${k.total} cards · ${nTopics} topic${nTopics===1?'':'s'}</div></div></div>
+    <div class="tags"><span class="tag gs">${PAPERS[d.paper].name}</span><span class="tag due">${k.due} due</span><span class="tag new">${k.new} new</span></div>
+    <div><div class="bar"><i style="width:${pct}%"></i></div><div class="foot"><span>${pct}% learned</span><span>${k.mature} mastered</span></div></div>
+    <div class="actions">
+      <button class="btn gold sm" onclick="openRevise('${d.id}')" ${k.total?'':'disabled'}>Revise</button>
+      <button class="btn sm" onclick="addCardModal('${d.id}')">+ Card</button>
+      <button class="btn sm" onclick="go('browse','${d.id}')">View cards</button>
+    </div></div>`;
+}
+
+/* ============ views ============ */
+function homeView(){
+  const k=counts(), h=new Date().getHours(), hi=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  const today=db.log[todayKey()]||0, goal=db.dailyGoal, todo=k.due+k.newToday;
+  const prog=t=>Math.min(100,Math.max(0,Math.round((Date.now()-CYCLE_START)/(t-CYCLE_START)*100)));
+  const ringCols={GS1:['#c25a3e','#fde3d9'],GS2:['#5a63c9','#e7e9fb'],GS3:['#2f8a62','#daf2e5']};
+  const papers=Object.entries(PAPERS).map(([key,p])=>{const c=counts({paper:key});const pct=c.total?Math.round(c.learned/c.total*100):0;
+    return `<div class="panel paper">${ring(pct,...ringCols[key])}<div><h3>${p.name}</h3><div class="muted">${p.desc}</div><div class="muted" style="color:var(--dim)">${c.learned}/${c.total} cards</div></div></div>`}).join('');
+  return `<div class="head"><div><div class="eyebrow">${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})}</div><h1>${hi}, <em>aspirant.</em></h1>
+    <p>${Object.keys(db.log).length?'Consistency beats intensity. Clear today’s revision and your memory stays ahead of the syllabus.':`Your revision starts today. ${k.total} questions across ${db.decks.length} subjects are ready – begin with today’s ${k.newToday} new cards.`}</p></div></div>
+  <div class="hero">
+    <div class="panel today"><div class="eyebrow">Today’s revision</div>
+      <div class="big">${todo} <small>cards</small></div>
+      <p>${k.due} due for review · ${k.newToday} new · about ${Math.max(1,Math.round(todo*8/60))} minutes</p>
+      <button class="btn gold" onclick="startStudy()" ${todo?'':'disabled'}>Begin session →</button></div>
+    <div class="panel count-card c1"><div class="lbl">Prelims 2027</div><div class="days">${daysTo(PRELIMS)}<span>days</span></div><div class="date">Sunday, 23 May 2027</div><div class="track"><i style="width:${prog(PRELIMS)}%"></i></div></div>
+    <div class="panel count-card c2"><div class="lbl">Mains 2027</div><div class="days">${daysTo(MAINS)}<span>days</span></div><div class="date">From Friday, 20 August 2027</div><div class="track"><i style="width:${prog(MAINS)}%"></i></div></div>
+  </div>
+  <div class="grid kpis">
+    <div class="panel kpi"><div class="lbl">Reviewed today</div><div class="num">${today}<span class="muted" style="font-size:18px"> / ${goal}</span></div><div class="sub">daily target</div></div>
+    <div class="panel kpi"><div class="lbl">Streak</div><div class="num">${streak()}</div><div class="sub">days without a break</div></div>
+    <div class="panel kpi"><div class="lbl">Cards mastered</div><div class="num">${k.mature}</div><div class="sub">stable for 21+ days</div></div>
+    <div class="panel kpi"><div class="lbl">Library</div><div class="num">${k.total}</div><div class="sub">${db.decks.length} subjects</div></div>
+  </div>
+  <div class="section-title"><h2>Syllabus coverage</h2><span class="muted">cards learned, by GS paper</span></div>
+  <div class="grid papers">${papers}</div>
+  <div class="section-title"><h2>Subjects</h2><span class="muted">press Revise to choose topics and number of questions</span></div>
+  <div class="grid decks">${db.decks.map(deckTile).join('')}</div>
+  <div class="section-title"><h2>Consistency</h2><span class="muted">last 20 weeks</span></div>
+  <div class="panel">${heatmap()}</div>`;
+}
+function reviseView(){
+  const chips=[['all','All subjects'],...Object.entries(PAPERS).map(([k,p])=>[k,p.name])];
+  const f=reviseFilter==='all'?null:{paper:reviseFilter};
+  const k=counts(f);
+  return `<div class="head"><div><div class="eyebrow">Focused revision</div><h1>Choose what to <em>revise.</em></h1><p>Run a quick mixed session, or pick a subject to choose its topics and how many questions to do.</p></div></div>
+  <div class="filters">${chips.map(([v,l])=>`<button class="chip ${reviseFilter===v?'on':''}" onclick="reviseFilter='${v}';render()">${l}</button>`).join('')}</div>
+  <div class="panel today" style="margin-bottom:8px"><div class="eyebrow">${reviseFilter==='all'?'Mixed session · all subjects':PAPERS[reviseFilter].name+' · '+PAPERS[reviseFilter].desc}</div>
+    <div class="big">${k.due+k.newToday} <small>cards ready</small></div><p>${k.due} due · ${k.newToday} new · ${k.mature} mastered</p>
+    <button class="btn gold" onclick="startStudy(${f?`{paper:'${reviseFilter}'}`:''})" ${k.due+k.newToday?'':'disabled'}>Start mixed session →</button></div>
+  <div class="section-title"><h2>Or revise one subject</h2></div>
+  <div class="grid decks">${db.decks.filter(d=>!f||d.paper===reviseFilter).map(deckTile).join('')}</div>`;
+}
+function decksView(){
+  return `<div class="head"><div><div class="eyebrow">Library</div><h1>Subjects</h1><p>${db.decks.length} subjects · ${db.cards.length} cards across GS I, II and III.</p></div></div>
+  <div class="grid decks">${db.decks.map(deckTile).join('')}</div>`;
+}
+function snippet(c,side){const v=side==='front'?c.front:c.back; if(!c.html)return esc(v);
+  const t=plain(v); const img=hasImg(v)?'<span class="thumb">▣ image</span> ':''; return img+esc(t.length>180?t.slice(0,180)+'…':t)||img;}
+/* ---------- card grade (shown on grid tiles) ---------- */
+const GRADES={
+  New:{bg:'#e6e2fb',ink:'#5a4fc4',label:'New'},
+  A:{bg:'#d3f0e0',ink:'#2b7a52',label:'A'}, B:{bg:'#d5eef2',ink:'#22737d',label:'B'},
+  C:{bg:'#fbe8a8',ink:'#8a6510',label:'C'}, D:{bg:'#f8d2c9',ink:'#b0473a',label:'D'}, F:{bg:'#f4bcbc',ink:'#a3302a',label:'F'}};
+function gradeOf(c){ if(c.state==='new')return 'New'; if(c.state==='learning'||c.s<1)return 'F'; return c.s>=21?'A':c.s>=7?'B':c.s>=3?'C':'D'; }
+const isMarked=c=>(c.tags||[]).includes('Marked');
+function toggleMark(id,ev){ if(ev)ev.stopPropagation(); const c=db.cards.find(x=>x.id===id); c.tags=c.tags||[];
+  c.tags=isMarked(c)?c.tags.filter(t=>t!=='Marked'):[...c.tags,'Marked']; save(); render(); }
+
+let browseMode='grid', browseGrade='';
+function tileHTML(c){
+  const g=GRADES[gradeOf(c)], back=c.html?(plain(c.back)||hasImg(c.back)):c.back;
+  return `<div class="tile" onclick="editCard('${c.id}')" style="--gbg:${g.bg};--gink:${g.ink}">
+    <div class="tile-h"><button class="star ${isMarked(c)?'on':''}" title="${isMarked(c)?'Unmark':'Mark'} card" onclick="toggleMark('${c.id}',event)">★</button>
+      ${c.stage?`<span class="tile-pyq">${esc(c.stage)}</span>`:''}<span class="tile-g">${g.label}</span></div>
+    <div class="tile-b"><div class="tile-q">${cardHTML(c,'front')}</div><hr>
+      <div class="tile-a">${back?cardHTML(c,'back'):'<span class="muted">No answer yet</span>'}</div></div>
+    <div class="tile-f">${topicsOf(c).filter(t=>t!=='Marked').map(t=>`<span>${esc(t)}</span>`).join('')}</div>
+    <button class="tile-edit" title="Edit card" onclick="event.stopPropagation();editCard('${c.id}')">✎ Edit</button>
+  </div>`;
+}
+function browseView(){
+  const now=Date.now(); let cs=browseDeck?cardsFor({deck:browseDeck}):db.cards;
+  const topics=[...new Set(cs.flatMap(topicsOf))].sort();
+  if(browseTopic)cs=cs.filter(c=>topicsOf(c).includes(browseTopic));
+  if(browseGrade)cs=cs.filter(c=>browseGrade==='Marked'?isMarked(c):gradeOf(c)===browseGrade);
+  if(browseQ){const q=browseQ.toLowerCase(); cs=cs.filter(c=>(plain(c.front)+' '+plain(c.back)+' '+topicsOf(c).join(' ')).toLowerCase().includes(q));}
+  const gcount=k=>(browseDeck?cardsFor({deck:browseDeck}):db.cards).filter(c=>k==='Marked'?isMarked(c):gradeOf(c)===k).length;
+  const gradeChips=['New','A','B','C','D','F'].map(k=>`<button class="gchip ${browseGrade===k?'on':''}" style="--gbg:${GRADES[k].bg};--gink:${GRADES[k].ink}" onclick="browseGrade=browseGrade==='${k}'?'':'${k}';render()">${k} <b>${gcount(k)}</b></button>`).join('')
+    +`<button class="gchip ${browseGrade==='Marked'?'on':''}" style="--gbg:#fff3c4;--gink:#9a6f10" onclick="browseGrade=browseGrade==='Marked'?'':'Marked';render()">★ Marked <b>${gcount('Marked')}</b></button>`;
+  let body;
+  if(browseMode==='grid'){
+    body=cs.length?`<div class="tiles">${cs.map(tileHTML).join('')}</div>`:'<div class="panel empty">No cards match</div>';
+  }else{
+    const rows=cs.map(c=>{const d=deckOf(c.deckId);
+      const st=c.state==='new'?'<span class="tag new">New</span>':isDue(c,now)?'<span class="tag due">Due</span>':`<span class="tag">in ${fmtIvl(c.due-now)}</span>`;
+      return `<tr><td style="max-width:320px">${isMarked(c)?'<span style="color:#e0a400">★</span> ':''}${snippet(c,'front')}<div class="muted" style="font-size:11.5px;margin-top:4px">${esc(topicsOf(c).filter(t=>t!=='Marked').join(' · '))}</div></td><td class="muted" style="max-width:340px">${snippet(c,'back')}</td><td><span class="tag" style="${deckVars(d)};background:var(--bgc);color:var(--c)">${esc(d?d.name:'')}</span></td><td>${st}</td><td><button class="btn sm" onclick="editCard('${c.id}')">✎ Edit</button></td></tr>`}).join('');
+    body=`<div class="panel" style="padding:6px 16px;overflow-x:auto"><table><thead><tr><th>Question</th><th>Answer</th><th>Subject</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="empty">No cards match</td></tr>'}</tbody></table></div>`;
+  }
+  return `<div class="head"><div><div class="eyebrow">Card library</div><h1>${browseDeck?esc(deckOf(browseDeck)?.name||''):'All cards'}</h1><p>${cs.length} cards${browseTopic?' · topic: '+esc(browseTopic):''}${browseGrade?' · '+esc(browseGrade):''}</p></div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <div class="seg"><button class="${browseMode==='grid'?'on':''}" onclick="browseMode='grid';render()">▦ Cards</button><button class="${browseMode==='table'?'on':''}" onclick="browseMode='table';render()">☰ List</button></div>
+      <select style="width:auto;min-width:200px" onchange="go('browse',this.value)"><option value="">All subjects</option>${db.decks.map(d=>`<option value="${d.id}" ${d.id===browseDeck?'selected':''}>${esc(d.name)}</option>`).join('')}</select></div></div>
+  <div class="searchbar"><input type="text" id="bq" placeholder="Search questions, answers, topics…" value="${esc(browseQ)}" oninput="browseQ=this.value;clearTimeout(window._bq);window._bq=setTimeout(()=>{render();const i=$('#bq');i.focus();i.setSelectionRange(i.value.length,i.value.length)},250)">
+    <select style="width:auto" onchange="browseTopic=this.value;render()"><option value="">All topics (${topics.length})</option>${topics.map(t=>`<option ${t===browseTopic?'selected':''}>${esc(t)}</option>`).join('')}</select></div>
+  <div class="gchips">${gradeChips}<span class="muted" style="font-size:12px;margin-left:4px">Grade = how firmly you know it (A strongest · F forgotten)</span></div>
+  ${body}`;
+}
+
+/* ---------- edit card ---------- */
+let ed=null;
+function edText(c,side){ const v=side==='front'?c.front:c.back; return c.html?sanitize(v):esc(v).replace(/\n/g,'<br>'); }
+function toolbar(target){
+  const b=(cmd,label,title,arg)=>`<button type="button" title="${title}" onmousedown="event.preventDefault();edCmd('${target}','${cmd}'${arg?`,'${arg}'`:''})">${label}</button>`;
+  return `<div class="ed-tools">${b('bold','<b>B</b>','Bold')}${b('italic','<i>I</i>','Italic')}${b('underline','<u>U</u>','Underline')}<span class="sep"></span>${b('insertUnorderedList','• List','Bullet list')}${b('insertOrderedList','1. List','Numbered list')}<span class="sep"></span>${b('hiliteColor','<span style="background:#fff1a8;padding:0 3px">H</span>','Highlight','#fff1a8')}${b('removeFormat','✕ Clear','Remove formatting')}</div>`;
+}
+function edCmd(target,cmd,arg){ const el=document.getElementById(target); el.focus(); try{document.execCommand('styleWithCSS',false,cmd==='hiliteColor');document.execCommand(cmd,false,arg||null)}catch(e){} }
+function editCard(id){
+  const c=db.cards.find(x=>x.id===id); if(!c)return;
+  ed={id,tags:topicsOf(c).filter(t=>t!=='General'),confirmDel:false};
+  const d=deckOf(c.deckId), g=GRADES[gradeOf(c)];
+  modal(`<div class="ed-wrap" style="${deckVars(d)}">
+    <div class="ed-top"><div><div class="eyebrow" style="color:var(--c)">${esc(d.name)} · Edit card</div><h2>Edit card</h2></div>
+      <span class="tile-g" style="background:${g.bg};color:${g.ink}">${g.label==='New'?'New':'Grade '+g.label}</span></div>
+    <label>Question</label>${toolbar('edF')}<div class="ed rich" id="edF" contenteditable="true">${edText(c,'front')}</div>
+    <label>Answer</label>${toolbar('edB')}<div class="ed rich" id="edB" contenteditable="true">${edText(c,'back')}</div>
+    <label>Topics</label><div class="ed-tags" id="edTags"></div>
+    <div class="frow"><div><label>Subject</label><select id="edDeck" onchange="drawEdTags()">${db.decks.map(x=>`<option value="${x.id}" ${x.id===c.deckId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
+      <div><label>Type</label><select id="edStage"><option value="" ${!c.stage?'selected':''}>Regular</option><option ${c.stage==='PYQ'?'selected':''}>PYQ</option></select></div></div>
+    <div class="ed-meta">${c.state==='new'?'Not studied yet':`Reviewed ${c.reps}× · next review ${c.due<=Date.now()?'<b>due now</b>':'in '+fmtIvl(c.due-Date.now())}`} · <button class="linkish" onclick="edResetProgress()">Reset progress</button></div>
+    <div class="row" style="justify-content:space-between"><button class="btn danger" id="edDel" onclick="edDelete()">Delete card</button>
+      <span style="display:flex;gap:8px"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn gold" onclick="edSave()">Save changes</button></span></div>
+  </div>`,'wide');
+  drawEdTags();
+}
+function drawEdTags(){
+  const all=[...new Set(db.cards.filter(c=>c.deckId===($('#edDeck')?.value||'')).flatMap(c=>c.tags||[]))].sort();
+  $('#edTags').innerHTML=ed.tags.map((t,i)=>`<span class="etag">${esc(t)}<button onclick="ed.tags.splice(${i},1);drawEdTags()" title="Remove">×</button></span>`).join('')
+   +`<input id="edTagIn" list="edTagList" placeholder="${ed.tags.length?'Add topic…':'Add a topic, press Enter'}" onkeydown="if(event.key==='Enter'||event.key===','){event.preventDefault();edAddTag(this.value)}" onchange="edAddTag(this.value)"><datalist id="edTagList">${all.filter(t=>!ed.tags.includes(t)).map(t=>`<option value="${esc(t)}">`).join('')}</datalist>`;
+}
+function edAddTag(v){ v=(v||'').trim().replace(/,$/,''); if(v&&!ed.tags.includes(v))ed.tags.push(v); drawEdTags(); $('#edTagIn').focus(); }
+function edSave(){
+  const c=db.cards.find(x=>x.id===ed.id); const pend=$('#edTagIn').value.trim(); if(pend&&!ed.tags.includes(pend))ed.tags.push(pend);
+  const f=sanitize($('#edF').innerHTML), b=sanitize($('#edB').innerHTML);
+  if(!plain(f)&&!hasImg(f)){toast('The question can’t be empty');return}
+  Object.assign(c,{front:f,back:b,html:true,tags:ed.tags,deckId:$('#edDeck').value,stage:$('#edStage').value});
+  save(); closeModal(); render(); toast('Card saved');
+}
+function edResetProgress(){ const c=db.cards.find(x=>x.id===ed.id); Object.assign(c,{state:'new',s:0,d:5,due:Date.now(),reps:0,lapses:0,last:null}); save(); toast('Progress reset — card is new again'); editCard(ed.id); render(); }
+function edDelete(){
+  const btn=$('#edDel');
+  if(!ed.confirmDel){ed.confirmDel=true;btn.textContent='Tap again to delete';btn.classList.add('armed');setTimeout(()=>{if(ed&&btn.isConnected){ed.confirmDel=false;btn.textContent='Delete card';btn.classList.remove('armed')}},3500);return}
+  db.cards=db.cards.filter(x=>x.id!==ed.id);
+  if(studyState){studyState.queue=studyState.queue.filter(id=>id!==ed.id);}
+  save(); closeModal(); render(); toast('Card deleted');
+}
+
+function statsView(){
+  const k=counts(), cs=db.cards.filter(c=>c.state!=='new'), now=Date.now();
+  const avgR=cs.length?Math.round(cs.reduce((a,c)=>a+retr(c,now),0)/cs.length*100)+'%':'—';
+  const f=Array(14).fill(0); cs.forEach(c=>{const i=Math.floor((c.due-now)/DAY); if(i<14)f[Math.max(0,i)]++}); const mx=Math.max(1,...f);
+  const bars=f.map((v,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px"><div style="font-size:11px;color:var(--muted)">${v||''}</div><div style="width:100%;max-width:26px;height:${6+v/mx*140}px;background:${i===0?'#6b5fd3':'#cfc8f6'};border-radius:7px 7px 3px 3px;opacity:${v?1:.35}"></div><div style="font-size:10.5px;color:var(--dim)">${i===0?'Today':'+'+i}</div></div>`).join('');
+  const subj=db.decks.map(d=>{const cc=cardsFor({deck:d.id}).filter(c=>c.state!=='new');const r=cc.length?Math.round(cc.reduce((a,c)=>a+retr(c,now),0)/cc.length*100):0;
+    return `<div style="display:grid;grid-template-columns:210px 1fr 46px;align-items:center;gap:14px;padding:9px 0;${deckVars(d)}"><span style="font-size:13.5px;font-weight:600">${esc(d.name)}</span><div class="bar" style="background:var(--bgc)"><i style="width:${r}%"></i></div><span class="serif" style="font-size:18px;text-align:right">${cc.length?r+'%':'—'}</span></div>`}).join('');
+  const total=Object.values(db.log).reduce((a,b)=>a+b,0);
+  return `<div class="head"><div><div class="eyebrow">Insights</div><h1>How your memory is <em>holding up.</em></h1></div></div>
+  <div class="grid kpis">
+    <div class="panel kpi"><div class="lbl">Estimated recall now</div><div class="num">${avgR}</div><div class="sub">across learned cards</div></div>
+    <div class="panel kpi"><div class="lbl">Cards learned</div><div class="num">${k.learned}</div><div class="sub">of ${k.total}</div></div>
+    <div class="panel kpi"><div class="lbl">Total reviews</div><div class="num">${total.toLocaleString('en-IN')}</div><div class="sub">this cycle</div></div>
+    <div class="panel kpi"><div class="lbl">Lapses</div><div class="num">${db.cards.reduce((a,c)=>a+c.lapses,0)}</div><div class="sub">cards forgotten</div></div>
+  </div>
+  <div class="section-title"><h2>Recall by subject</h2><span class="muted">weakest subjects need more revision</span></div>
+  <div class="panel">${subj}</div>
+  <div class="section-title"><h2>Review forecast</h2><span class="muted">next 14 days</span></div>
+  <div class="panel">${cs.length?`<div style="display:flex;align-items:flex-end;gap:6px;height:190px">${bars}</div>`:'<div class="empty">Your 14-day review forecast appears after your first session.</div>'}</div>
+  <div class="section-title"><h2>Consistency</h2></div><div class="panel">${heatmap()}</div>`;
+}
+function heatmap(){
+  const days=140, cells=[], start=new Date(Date.now()-(days-1)*DAY);
+  for(let i=0;i<start.getDay();i++)cells.push('<i style="visibility:hidden"></i>');
+  for(let i=0;i<days;i++){const d=new Date(start.getTime()+i*DAY).toISOString().slice(0,10),v=db.log[d]||0;
+    cells.push(`<i class="${v===0?'':v<15?'l1':v<30?'l2':v<50?'l3':'l4'}" title="${d}: ${v} reviews"></i>`);}
+  return `<div class="heat">${cells.join('')}</div><div class="legend">Less <i style="background:#f0ede6"></i><i style="background:#dcd6fa"></i><i style="background:#b7adf2"></i><i style="background:#8f82e4"></i><i style="background:#6b5fd3"></i> More</div>`;
+}
+
+/* ============ revise popup: how many questions + which topics ============ */
+let rv=null, rvTopicList=[];
+function openRevise(deckId){
+  const all=[...new Set(cardsFor({deck:deckId}).flatMap(topicsOf))];
+  rv={deck:deckId,topics:new Set(all),n:20,order:'smart'};
+  drawRevise();
+}
+function rvPool(){ return cardsFor({deck:rv.deck}).filter(c=>topicsOf(c).some(t=>rv.topics.has(t))); }
+function rvQueue(){
+  const now=Date.now(), pool=rvPool();
+  const due=pool.filter(c=>isDue(c,now)).sort((a,b)=>a.due-b.due);
+  const nw=pool.filter(c=>c.state==='new');
+  const rest=pool.filter(c=>c.state!=='new'&&!isDue(c,now)).sort((a,b)=>retr(a,now)-retr(b,now)); // weakest first
+  const n=rv.n==='all'?pool.length:Math.min(+rv.n||0,pool.length);
+  const pick=[...due,...nw,...rest].slice(0,n);
+  if(rv.order==='shuffle'){for(let i=pick.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pick[i],pick[j]]=[pick[j],pick[i]];}}
+  const mix={due:pick.filter(c=>isDue(c,now)).length,new:pick.filter(c=>c.state==='new').length}; mix.extra=pick.length-mix.due-mix.new;
+  return {pick,mix,poolSize:pool.length};
+}
+function drawRevise(){
+  const d=deckOf(rv.deck), now=Date.now(), cs=cardsFor({deck:rv.deck});
+  const topicStats={}; cs.forEach(c=>topicsOf(c).forEach(t=>{const s=topicStats[t]||(topicStats[t]={n:0,due:0});s.n++;if(isDue(c,now))s.due++;}));
+  const topics=Object.keys(topicStats).sort((a,b)=>topicStats[b].n-topicStats[a].n||a.localeCompare(b));
+  rvTopicList=topics;
+  const {pick,mix,poolSize}=rvQueue();
+  const presets=[10,20,30,50];
+  const custom=rv.n!=='all'&&!presets.includes(+rv.n);
+  modal(`<div style="${deckVars(d)}">
+    <div class="rv-head"><div class="glyph" style="width:48px;height:48px">${esc(d.glyph)}</div><div><div class="eyebrow" style="color:var(--c)">Revise ${esc(d.name)}</div><h2>Set up your session</h2></div></div>
+    <div class="rv-sec"><div class="lbl"><span>How many questions?</span></div>
+      <div class="counts">${presets.map(p=>`<button class="chip ${rv.n!=='all'&&+rv.n===p?'on':''}" onclick="rv.n=${p};drawRevise()">${p}</button>`).join('')}
+        <button class="chip ${rv.n==='all'?'on':''}" onclick="rv.n='all';drawRevise()">All (${poolSize})</button>
+        <input type="number" min="1" placeholder="Custom" value="${custom?rv.n:''}" onchange="rv.n=Math.max(1,parseInt(this.value)||1);drawRevise()"></div></div>
+    <div class="rv-sec"><div class="lbl"><span>Which topics? <span style="text-transform:none;letter-spacing:0;font-weight:600">(${rv.topics.size} of ${topics.length} selected)</span></span>
+      <span><button onclick="rv.topics=new Set(rvTopicList);drawRevise()">Select all</button> · <button onclick="rv.topics=new Set();drawRevise()">Clear</button></span></div>
+      <div class="topics-list">${topics.map((t,i)=>`<div class="topic ${rv.topics.has(t)?'on':''}" onclick="rvToggle(${i})"><span class="box"></span><span>${esc(t)}</span><span class="n">${topicStats[t].n}${topicStats[t].due?`<span class="d">${topicStats[t].due} due</span>`:''}</span></div>`).join('')}</div></div>
+    <div class="rv-sec"><div class="lbl"><span>Order</span></div>
+      <div class="seg"><button class="${rv.order==='smart'?'on':''}" onclick="rv.order='smart';drawRevise()">Due first</button><button class="${rv.order==='shuffle'?'on':''}" onclick="rv.order='shuffle';drawRevise()">Shuffle</button></div></div>
+    <div class="rv-sum"><span><b>${pick.length} question${pick.length===1?'':'s'}</b> · ${mix.due} due · ${mix.new} new${mix.extra?` · ${mix.extra} extra practice`:''}</span><span>≈ ${Math.max(1,Math.round(pick.length*8/60))} min</span></div>
+    <div class="row"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn gold" style="background:var(--c)" onclick="rvStart()" ${pick.length?'':'disabled'}>Start revision →</button></div>
+  </div>`);
+}
+function rvToggle(i){const t=rvTopicList[i]; rv.topics.has(t)?rv.topics.delete(t):rv.topics.add(t); drawRevise();}
+function rvStart(){const {pick}=rvQueue(); if(!pick.length)return; closeModal(); beginQueue(pick.map(c=>c.id));}
+
+/* ============ study ============ */
+function startStudy(f){
+  const now=Date.now(), pool=cardsFor(f);
+  const due=pool.filter(c=>isDue(c,now)).sort((a,b)=>a.due-b.due);
+  const nw=pool.filter(c=>c.state==='new').slice(0,db.newPerDay);
+  const queue=[...due,...nw].map(c=>c.id);
+  if(!queue.length){toast('Nothing due here right now');return}
+  beginQueue(queue);
+}
+function beginQueue(queue){studyState={queue,i:0,shown:false,done:0,total:queue.length,tally:[0,0,0,0]}; view='study'; render(); window.scrollTo(0,0);}
+function studyView(){
+  const s=studyState;
+  if(!s||s.i>=s.queue.length){
+    const t=s?s.tally:[0,0,0,0], n=t.reduce((a,b)=>a+b,0);
+    return `<div class="study-wrap"><div class="panel done"><div class="seal">✓</div><div class="eyebrow">Session complete</div><h1 style="font-size:38px;margin:10px 0 8px">Well revised.</h1>
+      <p class="muted">${n} reviews · ${n?Math.round((n-t[0])/n*100):0}% recalled correctly · ${daysTo(PRELIMS)} days to Prelims</p>
+      <div class="tags" style="justify-content:center;margin:20px 0 28px"><span class="tag" style="color:#b9473a;background:var(--again-bg)">Again ${t[0]}</span><span class="tag" style="color:#9a6f10;background:var(--hard-bg)">Hard ${t[1]}</span><span class="tag" style="color:#2b7a52;background:var(--good-bg)">Good ${t[2]}</span><span class="tag" style="color:#3c66b3;background:var(--easy-bg)">Easy ${t[3]}</span></div>
+      <button class="btn gold" onclick="go('home')">Back to dashboard</button></div></div>`;
+  }
+  const c=db.cards.find(x=>x.id===s.queue[s.i]), d=deckOf(c.deckId), pct=Math.round(s.done/s.total*100);
+  const stTag=c.state==='new'?'New':c.state==='learning'?'Relearning':'Review';
+  const btns=[['Again',1],['Hard',2],['Good',3],['Easy',4]].map(([l,g])=>`<button class="r${g}" onclick="rate(${g})">${l}<small>${fmtIvl(preview(c,g).ivl)}</small></button>`).join('');
+  const front=!c.html?`<div class="q">${esc(c.front)}</div>`:`<div class="q rich${!hasImg(c.front)&&plain(c.front).length<110?' short':''}">${cardHTML(c,'front')}</div>`;
+  const hasBack=c.html?(plain(c.back)||hasImg(c.back)):c.back;
+  return `<div class="study-wrap">
+    <div class="study-top"><button class="btn sm" onclick="go('revise')">✕ End session</button><div class="bar"><i style="width:${pct}%"></i></div><span class="muted" style="font-size:12.5px">${s.queue.length-s.i} remaining</span></div>
+    <div class="flash" style="${deckVars(d)}"><span class="corner">${esc(d?d.name:'')} · ${esc(topicsOf(c)[0])}</span>
+      <span class="corner2"><button class="ptag star-s ${isMarked(c)?'on':''}" title="Mark" onclick="toggleMark('${c.id}')">★</button>${c.stage?`<span class="ptag gold">${esc(c.stage)}</span>`:''}<span class="ptag">${stTag}</span><button class="ptag editp" onclick="editCard('${c.id}')">✎ Edit</button></span>
+      ${front}
+      ${s.shown?`<div class="a${c.html?' rich':''}">${hasBack?cardHTML(c,'back'):'<span style="color:var(--dim);font-style:italic">This card has no answer saved yet.</span>'}</div>${topicsOf(c).length>1?`<div class="topics">${topicsOf(c).map(t=>`<span>${esc(t)}</span>`).join('')}</div>`:''}`:''}
+    </div>
+    ${s.shown?`<div class="rate">${btns}</div><p class="hint">Rate honestly — the time under each button is when this card returns. Keys <span class="kbd">1</span> <span class="kbd">2</span> <span class="kbd">3</span> <span class="kbd">4</span></p>`
+      :`<button class="btn gold reveal" onclick="reveal()">Reveal answer</button><p class="hint">Recall the answer in your head first — then reveal. <span class="kbd">Space</span></p>`}
+  </div>`;
+}
+function reveal(){studyState.shown=true;render()}
+function rate(g){
+  const s=studyState, idx=db.cards.findIndex(x=>x.id===s.queue[s.i]); const n=preview(db.cards[idx],g); delete n.ivl; db.cards[idx]=n;
+  s.tally[g-1]++; db.log[todayKey()]=(db.log[todayKey()]||0)+1;
+  if(g===1){s.queue.push(n.id);s.total++}
+  s.i++; s.done++; s.shown=false; save(); render();
+}
+document.addEventListener('keydown',e=>{
+  if(view!=='study'||!studyState||$('#modalBg').classList.contains('show')||e.target.matches('input,textarea,select'))return;
+  if(!studyState.shown&&(e.code==='Space'||e.key==='Enter')){e.preventDefault();reveal()}
+  else if(studyState.shown&&['1','2','3','4'].includes(e.key))rate(+e.key);
+});
+
+/* ============ add card ============ */
+function addCardModal(deckId){
+  const topics=[...new Set(cardsFor({deck:deckId}).flatMap(topicsOf))].sort();
+  modal(`<div class="eyebrow">New card</div><h2 style="margin-top:6px">Add a card</h2>
+  <label>Subject</label><select id="cd">${db.decks.map(d=>`<option value="${d.id}" ${d.id===deckId?'selected':''}>${esc(d.name)}</option>`).join('')}</select>
+  <label>Question</label><textarea id="cf" placeholder="e.g. Which Article deals with the Election Commission?"></textarea>
+  <label>Answer</label><textarea id="cb"></textarea>
+  <div class="frow"><div><label>Topic</label><input type="text" id="cs" list="topicList" placeholder="e.g. Constitutional Bodies"><datalist id="topicList">${topics.map(t=>`<option value="${esc(t)}">`).join('')}</datalist></div>
+  <div><label>Type</label><select id="cst"><option value="">Regular</option><option>PYQ</option></select></div></div>
+  <div class="row"><button class="btn" onclick="closeModal()">Close</button><button class="btn gold" onclick="saveCard()">Add card</button></div>`);
+  setTimeout(()=>$('#cf').focus(),30);
+}
+function saveCard(){const f=$('#cf').value.trim(), b=$('#cb').value.trim(); if(!f||!b){toast('Fill in both question and answer');return}
+  const t=$('#cs').value.trim();
+  db.cards.push({id:uid(),deckId:$('#cd').value,front:f,back:b,tags:t?[t]:[],stage:$('#cst').value,state:'new',s:0,d:5,due:Date.now(),reps:0,lapses:0,last:null});
+  save(); $('#cf').value='';$('#cb').value='';$('#cf').focus(); toast('Card added — add another'); render();}
+
+/* ============ boot ============ */
+/* Extra card packs (cards made from your notes, etc). Added on top of existing data — progress, stars and edits are kept. */
+const PACKS=['polity_notes_1.json'];
+async function applyPacks(target){
+  target.packs=target.packs||[]; let added=0;
+  for(const file of PACKS){
+    if(target.packs.includes(file))continue;
+    try{
+      const pk=await (await fetch(file)).json(), now=Date.now();
+      if(!target.decks.find(d=>d.id===pk.deck))continue;
+      pk.cards.forEach(c=>{target.cards.push({id:uid(),deckId:pk.deck,front:c.front,back:c.back,html:true,tags:c.tags.filter(t=>!CLEAN_TAGS.includes(t)),stage:c.stage||'',state:'new',s:0,d:5,due:now,reps:0,lapses:0,last:null});added++;});
+      target.packs.push(file);
+    }catch(e){ console.log('[recall] could not load pack',file,e); }
+  }
+  return added;
+}
+async function freshData(){const d=seed(); await addShippedDecks(d); await applyPacks(d); return d;}
+$('#resetBtn').onclick=async(e)=>{const b=e.currentTarget; if(!b.dataset.arm){b.dataset.arm=1;b.textContent='Tap again to reset everything';setTimeout(()=>{delete b.dataset.arm;b.textContent='Reset all progress'},3500);return}
+  delete b.dataset.arm;b.textContent='Reset all progress'; db=await freshData();save();go('home');toast('All progress reset – every card is new again')};
+(async()=>{ if(!db){db=await freshData();save();} else { const n=await applyPacks(db); if(n){save(); setTimeout(()=>toast(`${n} new cards added to your deck`),400);} } const h0=(location.hash||'').slice(1); go(VIEWS.includes(h0)?h0:'home'); })();
+</script>
+</body>
+</html>
