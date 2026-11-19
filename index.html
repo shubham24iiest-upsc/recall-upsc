@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Recall · Prelims Navigator Program 2027 · Sarrthi IAS</title>
+<title>Active Recall · Prelims Navigator Program 2027 · Sarrthi IAS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -283,6 +283,14 @@ aside{top:var(--hdr)!important;height:calc(100vh - var(--hdr))!important;padding
 .flash .q h1,.flash .q h2,.flash .q h3,.flash .q h4,.flash .q h5,.flash .q h6,.tile-q h1,.tile-q h2,.tile-q h3,.tile-q h4{font-weight:700;margin:0 0 8px}
 .flash .q strong,.flash .q b,.tile-q strong,.tile-q b{font-weight:700}
 .flash .q p,.tile-q p{margin:0 0 8px}
+.flash .corner{max-width:calc(100% - 230px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:820px){.flash .corner{left:20px;max-width:calc(100% - 200px)}.flash .corner2{right:16px}}
+/* full-screen revision (no sidebar) */
+body.focus .app{grid-template-columns:1fr}
+body.focus aside{display:none}
+body.focus main{max-width:none;padding:36px 32px 60px}
+body.focus .study-wrap{max-width:920px}
+body.focus .flash{min-height:calc(100vh - var(--hdr) - 260px)}
 /* image lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(30,28,40,.82);z-index:70;display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
 .lightbox.show{display:flex}
@@ -326,9 +334,9 @@ aside{top:var(--hdr)!important;height:calc(100vh - var(--hdr))!important;padding
 <header class="site-head">
   <div class="ribbon"><span class="star">✦</span>Prelims Navigator Program <span class="yr">2027</span><span class="star">✦</span></div>
   <div class="hbar">
-    <img class="logo" src="sarrthi-logo-h.png" alt="Sarrthi IAS">
+    <img class="logo" src="sarrthi-logo-v2.png" alt="Sarrthi IAS">
     <span class="vsep"></span>
-    <div class="portal"><b>Recall</b><small>Active Recall Portal</small></div>
+    <div class="portal"><b>Active Recall</b></div>
     <div class="hright"><span class="pill">Prelims in <b id="hdrDays">—</b> days</span></div>
   </div>
 </header>
@@ -517,6 +525,7 @@ document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>go(b.dataset.view));
 const deckVars=d=>d?`--c:${d.c};--bgc:${d.bg}`:'';
 
 function render(){
+  document.body.classList.toggle('focus',view==='study');
   document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.view===view||(view==='study'&&b.dataset.view==='revise')));
   const k=counts(); $('#navDue').textContent=k.due+k.newToday; $('#hdrDays').textContent=daysTo(PRELIMS);
   $('#main').innerHTML = view==='home'?homeView(): view==='revise'?reviseView(): view==='decks'?decksView(): view==='browse'?browseView(): view==='stats'?statsView(): studyView();
@@ -544,9 +553,6 @@ function homeView(){
   const k=counts(), h=new Date().getHours(), hi=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   const today=db.log[todayKey()]||0, goal=db.dailyGoal, todo=k.due+k.newToday;
   const prog=t=>Math.min(100,Math.max(0,Math.round((Date.now()-CYCLE_START)/(t-CYCLE_START)*100)));
-  const ringCols={GS1:['#c25a3e','#fde3d9'],GS2:['#5a63c9','#e7e9fb'],GS3:['#2f8a62','#daf2e5']};
-  const papers=Object.entries(PAPERS).map(([key,p])=>{const c=counts({paper:key});const pct=c.total?Math.round(c.learned/c.total*100):0;
-    return `<div class="panel paper">${ring(pct,...ringCols[key])}<div><h3>${p.name}</h3><div class="muted">${p.desc}</div><div class="muted" style="color:var(--dim)">${c.learned}/${c.total} cards</div></div></div>`}).join('');
   return `<div class="head"><div><div class="eyebrow">${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})}</div><h1>${hi}, <em>aspirant.</em></h1>
     <p>${Object.keys(db.log).length?'Consistency beats intensity. Clear today’s revision and your memory stays ahead of the syllabus.':`Your revision starts today. ${k.total} questions across ${db.decks.length} subjects are ready – begin with today’s ${k.newToday} new cards.`}</p></div></div>
   <div class="hero">
@@ -563,8 +569,6 @@ function homeView(){
     <div class="panel kpi"><div class="lbl">Cards mastered</div><div class="num">${k.mature}</div><div class="sub">stable for 21+ days</div></div>
     <div class="panel kpi"><div class="lbl">Library</div><div class="num">${k.total}</div><div class="sub">${db.decks.length} subjects</div></div>
   </div>
-  <div class="section-title"><h2>Syllabus coverage</h2><span class="muted">cards learned, by GS paper</span></div>
-  <div class="grid papers">${papers}</div>
   <div class="section-title"><h2>Subjects</h2><span class="muted">press Revise to choose topics and number of questions</span></div>
   <div class="grid decks">${db.decks.map(deckTile).join('')}</div>
   <div class="section-title"><h2>Consistency</h2><span class="muted">last 20 weeks</span></div>
