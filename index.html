@@ -123,7 +123,7 @@ main{padding:40px 48px 70px;max-width:1160px;width:100%}
 .flash{background:#fff;color:var(--ink);border-radius:24px;min-height:360px;padding:56px 56px 40px;display:flex;flex-direction:column;justify-content:center;text-align:center;position:relative;border:1px solid var(--line);
   box-shadow:0 30px 60px -30px rgba(60,40,110,.25),0 2px 6px rgba(40,30,60,.04)}
 .flash::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;border-radius:24px 24px 0 0;background:var(--c,var(--accent));opacity:.55}
-.flash .q{font-family:Fraunces;font-size:32px;font-weight:600;line-height:1.28}
+.flash .q{font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:20px;font-weight:500;line-height:1.55;color:var(--ink)}
 .flash .a{margin-top:28px;padding-top:26px;border-top:1px dashed var(--line2);font-size:17px;line-height:1.65;white-space:pre-wrap;color:#3d3a45}
 .flash .src{margin-top:16px;color:var(--dim);font-style:italic;font-family:Fraunces;font-size:15px}
 .flash .corner{position:absolute;top:24px;left:28px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c,var(--muted));font-weight:700}
@@ -238,8 +238,8 @@ aside{top:var(--hdr)!important;height:calc(100vh - var(--hdr))!important;padding
 .star:hover{color:#e8b400;transform:scale(1.15)}.star.on{color:#f2b705;text-shadow:0 1px 0 rgba(150,100,0,.3)}
 .tile-b{flex:1;overflow:hidden;padding:12px 16px 0;position:relative;font-size:13px;line-height:1.5}
 .tile-b::after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;background:linear-gradient(transparent,#fff)}
-.tile-q{text-align:center;font-weight:600;font-size:15px;line-height:1.4;color:var(--ink)}
-.tile-q ol,.tile-q ul,.tile-q table{text-align:left;font-weight:500}
+.tile-q{text-align:center;font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-weight:500;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.tile-q ol,.tile-q ul,.tile-q table{text-align:left}
 .tile-b hr{border:none;border-top:1px solid var(--line);margin:12px 0}
 .tile-a{color:#3d3a45}
 .tile-b p{margin:0 0 6px}.tile-b p:empty{display:none}
@@ -278,14 +278,19 @@ aside{top:var(--hdr)!important;height:calc(100vh - var(--hdr))!important;padding
 .flash .ptag.editp:hover{background:var(--accent-soft);color:var(--accent-ink)}
 .flash .ptag.star-s{color:rgba(0,0,0,.25);font-size:12px}.flash .ptag.star-s.on{color:#f2b705;background:#fff6cf}
 
+/* one consistent question font */
+.flash .q *,.tile-q *{font-family:inherit!important;font-size:inherit!important;line-height:inherit}
+.flash .q h1,.flash .q h2,.flash .q h3,.flash .q h4,.flash .q h5,.flash .q h6,.tile-q h1,.tile-q h2,.tile-q h3,.tile-q h4{font-weight:700;margin:0 0 8px}
+.flash .q strong,.flash .q b,.tile-q strong,.tile-q b{font-weight:700}
+.flash .q p,.tile-q p{margin:0 0 8px}
 /* image lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(30,28,40,.82);z-index:70;display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
 .lightbox.show{display:flex}
 .lightbox img{max-width:100%;max-height:100%;border-radius:12px;background:#fff;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .lightbox span{position:absolute;top:16px;right:22px;color:#fff;font-size:13px;font-weight:700;opacity:.8}
 /* rich HTML card content */
-.flash .q.rich{font-family:"Plus Jakarta Sans",sans-serif;font-size:18px;font-weight:500;line-height:1.6;text-align:left}
-.flash .q.rich.short{font-family:Fraunces,serif;font-size:30px;font-weight:600;line-height:1.28;text-align:center}
+.flash .q.rich{text-align:left}
+.flash .q.rich.short{text-align:center}
 .flash .a.rich{white-space:normal;text-align:left;font-size:16px}
 .rich p{margin:0 0 8px}.rich p:empty{display:none}
 .rich h1,.rich h2,.rich h3,.rich h4{font-family:"Plus Jakarta Sans",sans-serif;font-size:17px;font-weight:800;margin:4px 0 10px}
@@ -313,7 +318,7 @@ aside{top:var(--hdr)!important;height:calc(100vh - var(--hdr))!important;padding
   .head h1{font-size:32px}
   .kpis{grid-template-columns:repeat(2,1fr)}
   .two,.frow,.topics-list{grid-template-columns:1fr}
-  .flash{padding:50px 24px 30px}.flash .q{font-size:25px}
+  .flash{padding:50px 24px 30px}.flash .q{font-size:17.5px}
 }
 </style>
 </head>
