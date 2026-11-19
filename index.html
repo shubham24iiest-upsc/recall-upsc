@@ -575,16 +575,13 @@ function homeView(){
   <div class="panel">${heatmap()}</div>`;
 }
 function reviseView(){
-  const chips=[['all','All subjects'],...Object.entries(PAPERS).map(([k,p])=>[k,p.name])];
-  const f=reviseFilter==='all'?null:{paper:reviseFilter};
-  const k=counts(f);
+  const k=counts();
   return `<div class="head"><div><div class="eyebrow">Focused revision</div><h1>Choose what to <em>revise.</em></h1><p>Run a quick mixed session, or pick a subject to choose its topics and how many questions to do.</p></div></div>
-  <div class="filters">${chips.map(([v,l])=>`<button class="chip ${reviseFilter===v?'on':''}" onclick="reviseFilter='${v}';render()">${l}</button>`).join('')}</div>
-  <div class="panel today" style="margin-bottom:8px"><div class="eyebrow">${reviseFilter==='all'?'Mixed session · all subjects':PAPERS[reviseFilter].name+' · '+PAPERS[reviseFilter].desc}</div>
+  <div class="panel today" style="margin-bottom:8px"><div class="eyebrow">Mixed session · all subjects</div>
     <div class="big">${k.due+k.newToday} <small>cards ready</small></div><p>${k.due} due · ${k.newToday} new · ${k.mature} mastered</p>
-    <button class="btn gold" onclick="startStudy(${f?`{paper:'${reviseFilter}'}`:''})" ${k.due+k.newToday?'':'disabled'}>Start mixed session →</button></div>
+    <button class="btn gold" onclick="startStudy()" ${k.due+k.newToday?'':'disabled'}>Start mixed session →</button></div>
   <div class="section-title"><h2>Or revise one subject</h2></div>
-  <div class="grid decks">${db.decks.filter(d=>!f||d.paper===reviseFilter).map(deckTile).join('')}</div>`;
+  <div class="grid decks">${db.decks.map(deckTile).join('')}</div>`;
 }
 function decksView(){
   return `<div class="head"><div><div class="eyebrow">Library</div><h1>Subjects</h1><p>${db.decks.length} subjects · ${db.cards.length} cards across GS I, II and III.</p></div></div>
