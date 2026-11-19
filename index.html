@@ -539,7 +539,7 @@ function deckTile(d){
   return `<div class="panel deck" style="${deckVars(d)}">
     <div class="top"><div class="glyph">${esc(d.glyph)}</div>
       <div style="flex:1;min-width:0"><h3>${esc(d.name)}</h3><div class="meta">${d.full?esc(d.full)+' · ':''}${k.total} cards · ${nTopics} topic${nTopics===1?'':'s'}</div></div></div>
-    <div class="tags"><span class="tag gs">${PAPERS[d.paper].name}</span><span class="tag due">${k.due} due</span><span class="tag new">${k.new} new</span></div>
+    <div class="tags"><span class="tag due">${k.due} due</span><span class="tag new">${k.new} new</span></div>
     <div><div class="bar"><i style="width:${pct}%"></i></div><div class="foot"><span>${pct}% learned</span><span>${k.mature} mastered</span></div></div>
     <div class="actions">
       <button class="btn gold sm" onclick="openRevise('${d.id}')" ${k.total?'':'disabled'}>Revise</button>
@@ -584,7 +584,7 @@ function reviseView(){
   <div class="grid decks">${db.decks.map(deckTile).join('')}</div>`;
 }
 function decksView(){
-  return `<div class="head"><div><div class="eyebrow">Library</div><h1>Subjects</h1><p>${db.decks.length} subjects · ${db.cards.length} cards across GS I, II and III.</p></div></div>
+  return `<div class="head"><div><div class="eyebrow">Library</div><h1>Subjects</h1><p>${db.decks.length} subjects · ${db.cards.length} cards</p></div></div>
   <div class="grid decks">${db.decks.map(deckTile).join('')}</div>`;
 }
 function snippet(c,side){const v=side==='front'?c.front:c.back; if(!c.html)return esc(v);
