@@ -916,10 +916,12 @@ async function applyPacks(target){
   }
   return added;
 }
+/* remove the 'Common mistake' line from cards already saved in a browser */
+function stripMistakes(target){ let n=0; target.cards.forEach(c=>{ if(c.back&&c.back.includes('Common mistake:')){ const nb=c.back.replace(/<p>⚠\s*<strong>Common mistake:<\/strong>[\s\S]*?<\/p>/g,''); if(nb!==c.back){c.back=nb;n++;} } }); return n; }
 async function freshData(){const d=seed(); await addShippedDecks(d); await applyPacks(d); applyMoves(d); return d;}
 $('#resetBtn').onclick=async(e)=>{const b=e.currentTarget; if(!b.dataset.arm){b.dataset.arm=1;b.textContent='Tap again to reset everything';setTimeout(()=>{delete b.dataset.arm;b.textContent='Reset all progress'},3500);return}
   delete b.dataset.arm;b.textContent='Reset all progress'; db=await freshData();save();go('home');toast('All progress reset – every card is new again')};
-(async()=>{ if(!db){db=await freshData();save();} else { const n=await applyPacks(db); if(applyMoves(db))save(); if(n){save(); setTimeout(()=>toast(`${n} new cards added to your deck`),400);} } const h0=(location.hash||'').slice(1); go(VIEWS.includes(h0)?h0:'home'); })();
+(async()=>{ if(!db){db=await freshData();save();} else { const n=await applyPacks(db); if(applyMoves(db))save(); if(stripMistakes(db))save(); if(n){save(); setTimeout(()=>toast(`${n} new cards added to your deck`),400);} } const h0=(location.hash||'').slice(1); go(VIEWS.includes(h0)?h0:'home'); })();
 </script>
 </body>
 </html>
