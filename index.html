@@ -190,6 +190,11 @@ code{background:#f3f1ec;padding:1px 6px;border-radius:5px;font-size:12.5px}
 .topic.on .box::after{content:"✓"}
 .topic .n{margin-left:auto;white-space:nowrap;font-size:11.5px;color:var(--muted);font-weight:700}
 .topic .d{font-size:10.5px;color:#b9473a;font-weight:800;margin-left:6px}
+.btabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:16px;background:#f3f0ea}
+.btabs button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 14px;border-radius:12px;font-weight:800;font-size:14px;color:var(--muted);text-align:left}
+.btabs button small{font-size:11.5px;font-weight:600;color:var(--muted)}
+.btabs button.on{background:#fff;color:var(--c,var(--ink));box-shadow:0 1px 3px rgba(40,30,10,.12)}
+.btabs button:disabled{opacity:.45;cursor:default}
 .rv-sum{margin-top:20px;padding:14px 16px;border-radius:14px;background:#f7f5f1;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
 .rv-sum b{color:var(--ink);font-size:15px}
 .seg{display:inline-flex;background:#f3f1ec;border-radius:12px;padding:3px;gap:2px}
@@ -233,6 +238,13 @@ aside{top:var(--hdr)!important;height:calc(100vh - var(--hdr))!important;padding
 .tile:hover{transform:translateY(-3px);box-shadow:0 16px 30px -16px rgba(40,30,60,.3)}
 .tile-h{background:var(--gbg);display:flex;align-items:center;gap:8px;padding:6px 12px;min-height:38px}
 .tile-g{margin-left:auto;font-family:Fraunces;font-weight:700;font-size:18px;color:var(--gink);padding:2px 10px;border-radius:10px}
+.tile-batch{font-size:10px;font-weight:800;padding:2px 7px;border-radius:12px;background:rgba(255,255,255,.65);color:var(--muted);letter-spacing:.03em}
+.tile-batch.b27{color:#4b48b8;background:#ecebff}
+.tile-acts{display:flex;gap:6px;justify-content:flex-end;padding:0 14px 12px}
+.tile-acts .tile-edit{position:static}
+.tile-move{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:10px;background:#ecebff;color:#4b48b8}
+.tile-move.back{background:#f3f0ea;color:var(--muted)}
+.moved-bar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 16px;padding:12px 16px;border-radius:14px;background:#ecebff;color:#3a379c;font-size:13.5px}
 .tile-pyq{font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:12px;background:rgba(255,255,255,.65);color:#9a6f10;letter-spacing:.04em}
 .star{font-size:20px;line-height:1;color:rgba(0,0,0,.18);padding:2px;transition:.12s}
 .star:hover{color:#e8b400;transform:scale(1.15)}.star.on{color:#f2b705;text-shadow:0 1px 0 rgba(150,100,0,.3)}
@@ -604,20 +616,21 @@ function tileHTML(c){
   const g=GRADES[gradeOf(c)], back=c.html?(plain(c.back)||hasImg(c.back)):c.back;
   return `<div class="tile" onclick="editCard('${c.id}')" style="--gbg:${g.bg};--gink:${g.ink}">
     <div class="tile-h"><button class="star ${isMarked(c)?'on':''}" title="${isMarked(c)?'Unmark':'Mark'} card" onclick="toggleMark('${c.id}',event)">★</button>
-      ${c.stage?`<span class="tile-pyq">${esc(c.stage)}</span>`:''}<span class="tile-g">${g.label}</span></div>
+      <span class="tile-batch ${batchOf(c)==='PNP 2027'?'b27':''}">${batchOf(c)}</span>${c.stage?`<span class="tile-pyq">${esc(c.stage)}</span>`:''}<span class="tile-g">${g.label}</span></div>
     <div class="tile-b"><div class="tile-q">${cardHTML(c,'front')}</div><hr>
       <div class="tile-a">${back?cardHTML(c,'back'):'<span class="muted">No answer yet</span>'}</div></div>
     <div class="tile-f">${topicsOf(c).filter(t=>t!=='Marked').map(t=>`<span>${esc(t)}</span>`).join('')}</div>
-    <button class="tile-edit" title="Edit card" onclick="event.stopPropagation();editCard('${c.id}')">✎ Edit</button>
+    <div class="tile-acts">${moveBtn(c)}<button class="tile-edit" title="Edit card" onclick="event.stopPropagation();editCard('${c.id}')">✎ Edit</button></div>
   </div>`;
 }
 function browseView(){
   const now=Date.now(); let cs=browseDeck?cardsFor({deck:browseDeck}):db.cards;
-  const topics=[...new Set(cs.flatMap(topicsOf))].sort();
+  const topics=[...new Set(cs.filter(c=>!browseBatch||batchOf(c)===browseBatch).flatMap(topicsOf))].sort();
+  if(browseBatch)cs=cs.filter(c=>batchOf(c)===browseBatch);
   if(browseTopic)cs=cs.filter(c=>topicsOf(c).includes(browseTopic));
   if(browseGrade)cs=cs.filter(c=>browseGrade==='Marked'?isMarked(c):gradeOf(c)===browseGrade);
   if(browseQ){const q=browseQ.toLowerCase(); cs=cs.filter(c=>(plain(c.front)+' '+plain(c.back)+' '+topicsOf(c).join(' ')).toLowerCase().includes(q));}
-  const gcount=k=>(browseDeck?cardsFor({deck:browseDeck}):db.cards).filter(c=>k==='Marked'?isMarked(c):gradeOf(c)===k).length;
+  const gcount=k=>(browseDeck?cardsFor({deck:browseDeck}):db.cards).filter(c=>!browseBatch||batchOf(c)===browseBatch).filter(c=>k==='Marked'?isMarked(c):gradeOf(c)===k).length;
   const gradeChips=['New','A','B','C','D','F'].map(k=>`<button class="gchip ${browseGrade===k?'on':''}" style="--gbg:${GRADES[k].bg};--gink:${GRADES[k].ink}" onclick="browseGrade=browseGrade==='${k}'?'':'${k}';render()">${k} <b>${gcount(k)}</b></button>`).join('')
     +`<button class="gchip ${browseGrade==='Marked'?'on':''}" style="--gbg:#fff3c4;--gink:#9a6f10" onclick="browseGrade=browseGrade==='Marked'?'':'Marked';render()">★ Marked <b>${gcount('Marked')}</b></button>`;
   let body;
@@ -626,7 +639,7 @@ function browseView(){
   }else{
     const rows=cs.map(c=>{const d=deckOf(c.deckId);
       const st=c.state==='new'?'<span class="tag new">New</span>':isDue(c,now)?'<span class="tag due">Due</span>':`<span class="tag">in ${fmtIvl(c.due-now)}</span>`;
-      return `<tr><td style="max-width:320px">${isMarked(c)?'<span style="color:#e0a400">★</span> ':''}${snippet(c,'front')}<div class="muted" style="font-size:11.5px;margin-top:4px">${esc(topicsOf(c).filter(t=>t!=='Marked').join(' · '))}</div></td><td class="muted" style="max-width:340px">${snippet(c,'back')}</td><td><span class="tag" style="${deckVars(d)};background:var(--bgc);color:var(--c)">${esc(d?d.name:'')}</span></td><td>${st}</td><td><button class="btn sm" onclick="editCard('${c.id}')">✎ Edit</button></td></tr>`}).join('');
+      return `<tr><td style="max-width:320px">${isMarked(c)?'<span style="color:#e0a400">★</span> ':''}${snippet(c,'front')}<div class="muted" style="font-size:11.5px;margin-top:4px">${esc(topicsOf(c).filter(t=>t!=='Marked').join(' · '))}</div></td><td class="muted" style="max-width:340px">${snippet(c,'back')}</td><td><span class="tag" style="${deckVars(d)};background:var(--bgc);color:var(--c)">${esc(d?d.name:'')}</span></td><td>${st}</td><td style="white-space:nowrap">${moveBtn(c,'btn sm')} <button class="btn sm" onclick="editCard('${c.id}')">✎ Edit</button></td></tr>`}).join('');
     body=`<div class="panel" style="padding:6px 16px;overflow-x:auto"><table><thead><tr><th>Question</th><th>Answer</th><th>Subject</th><th>Status</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="empty">No cards match</td></tr>'}</tbody></table></div>`;
   }
   return `<div class="head"><div><div class="eyebrow">Card library</div><h1>${browseDeck?esc(deckOf(browseDeck)?.name||''):'All cards'}</h1><p>${cs.length} cards${browseTopic?' · topic: '+esc(browseTopic):''}${browseGrade?' · '+esc(browseGrade):''}</p></div>
@@ -634,9 +647,10 @@ function browseView(){
       <div class="seg"><button class="${browseMode==='grid'?'on':''}" onclick="browseMode='grid';render()">▦ Cards</button><button class="${browseMode==='table'?'on':''}" onclick="browseMode='table';render()">☰ List</button></div>
       <select style="width:auto;min-width:200px" onchange="go('browse',this.value)"><option value="">All subjects</option>${db.decks.map(d=>`<option value="${d.id}" ${d.id===browseDeck?'selected':''}>${esc(d.name)}</option>`).join('')}</select></div></div>
   <div class="searchbar"><input type="text" id="bq" placeholder="Search questions, answers, topics…" value="${esc(browseQ)}" oninput="browseQ=this.value;clearTimeout(window._bq);window._bq=setTimeout(()=>{render();const i=$('#bq');i.focus();i.setSelectionRange(i.value.length,i.value.length)},250)">
+    <div class="seg">${['','PNP 2026','PNP 2027'].map(b=>`<button class="${browseBatch===b?'on':''}" onclick="browseBatch='${b}';browseTopic='';render()">${b||'All batches'}</button>`).join('')}</div>
     <select style="width:auto" onchange="browseTopic=this.value;render()"><option value="">All topics (${topics.length})</option>${topics.map(t=>`<option ${t===browseTopic?'selected':''}>${esc(t)}</option>`).join('')}</select></div>
   <div class="gchips">${gradeChips}<span class="muted" style="font-size:12px;margin-left:4px">Grade = how firmly you know it (A strongest · F forgotten)</span></div>
-  ${body}`;
+  ${movedBar()}${body}`;
 }
 
 /* ---------- edit card ---------- */
@@ -658,6 +672,7 @@ function editCard(id){
     <label>Answer</label>${toolbar('edB')}<div class="ed rich" id="edB" contenteditable="true">${edText(c,'back')}</div>
     <label>Topics</label><div class="ed-tags" id="edTags"></div>
     <div class="frow"><div><label>Subject</label><select id="edDeck" onchange="drawEdTags()">${db.decks.map(x=>`<option value="${x.id}" ${x.id===c.deckId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
+      <div><label>Batch</label><select id="edBatch">${BATCHES.map(b=>`<option ${batchOf(c)===b?'selected':''}>${b}</option>`).join('')}</select></div>
       <div><label>Type</label><select id="edStage"><option value="" ${!c.stage?'selected':''}>Regular</option><option ${c.stage==='PYQ'?'selected':''}>PYQ</option></select></div></div>
     <div class="ed-meta">${c.state==='new'?'Not studied yet':`Reviewed ${c.reps}× · next review ${c.due<=Date.now()?'<b>due now</b>':'in '+fmtIvl(c.due-Date.now())}`} · <button class="linkish" onclick="edResetProgress()">Reset progress</button></div>
     <div class="row" style="justify-content:space-between"><button class="btn danger" id="edDel" onclick="edDelete()">Delete card</button>
@@ -676,6 +691,7 @@ function edSave(){
   const f=sanitize($('#edF').innerHTML), b=sanitize($('#edB').innerHTML);
   if(!plain(f)&&!hasImg(f)){toast('The question can’t be empty');return}
   Object.assign(c,{front:f,back:b,html:true,tags:ed.tags,deckId:$('#edDeck').value,stage:$('#edStage').value});
+  const nb=$('#edBatch').value; if(nb!==batchOf(c)){ if(nb==='PNP 2027'&&!c.batch){c.batch='PNP 2027';c.moved=true;} else if(nb==='PNP 2026'&&c.moved){delete c.batch;delete c.moved;} else c.batch=nb; }
   save(); closeModal(); render(); toast('Card saved');
 }
 function edResetProgress(){ const c=db.cards.find(x=>x.id===ed.id); Object.assign(c,{state:'new',s:0,d:5,due:Date.now(),reps:0,lapses:0,last:null}); save(); toast('Progress reset — card is new again'); editCard(ed.id); render(); }
@@ -718,12 +734,64 @@ function heatmap(){
 
 /* ============ revise popup: how many questions + which topics ============ */
 let rv=null, rvTopicList=[];
+/* batches: every card belongs to a PNP batch; cards without one are the older PNP 2026 set */
+const BATCHES=['PNP 2026','PNP 2027'];
+function batchOf(c){ return c.batch||'PNP 2026'; }
+const rvKey=(c,t)=>batchOf(c)+'|'+t;
+let browseBatch='';
+/* ---- moving PNP 2026 cards into PNP 2027 ---- */
+// Moves applied for every student (filled in from the admin's "Copy list"): card key -> topic in PNP 2027
+const MOVES_2027={
+  'polity:1ddai5sa0pj':'Fundamental Rights', // Art. 25 'propagate'
+  'polity:1n8moimdae4':'Fundamental Rights', // First Amendment changes to FRs
+  'polity:1begeg29bp4':'Amendment',          // majority for amending provisions
+  'polity:ziha34ai8x':'Fundamental Rights',  // judiciary as 'State' under Art. 12
+  'polity:1mxqi7sz2y3':'Fundamental Rights', // Dicey's Rule of Law
+};
+function cardKey(c){ const t=plain(c.front).replace(/\s+/g,' ').trim().toLowerCase().slice(0,300); let h1=0xdeadbeef,h2=0x41c6ce57;
+  for(let i=0;i<t.length;i++){const ch=t.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909); h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  return (c.deckId+':'+(4294967296*(2097151&h2)+(h1>>>0)).toString(36)); }
+function applyMoves(target){ let n=0; target.cards.forEach(c=>{ if(c.batch)return; const t=MOVES_2027[cardKey(c)]; if(t!==undefined){c.batch='PNP 2027'; if(t&&!(c.tags||[]).includes(t))c.tags=[t]; n++;} }); return n; }
+function moveBtn(c,cls){
+  if(batchOf(c)==='PNP 2026') return `<button class="${cls||'tile-move'}" title="Move this card to PNP 2027" onclick="event.stopPropagation();openMove('${c.id}')">→ PNP 2027</button>`;
+  if(c.moved) return `<button class="${cls||'tile-move back'}" title="Undo the move" onclick="event.stopPropagation();moveBack('${c.id}')">↩ Back to 2026</button>`;
+  return '';
+}
+function openMove(id){
+  const c=db.cards.find(x=>x.id===id); if(!c)return; const d=deckOf(c.deckId);
+  const cur=topicsOf(c).filter(t=>t!=='Marked'&&t!=='General');
+  const t27=[...new Set(cardsFor({deck:c.deckId}).filter(x=>batchOf(x)==='PNP 2027').flatMap(topicsOf))].sort();
+  const def=cur.find(t=>t27.includes(t))||cur[0]||t27[0]||'General';
+  const opts=[...new Set([def,...cur,...t27])];
+  modal(`<div style="${deckVars(d)}"><div class="eyebrow" style="color:var(--c)">${esc(d.name)} · PNP 2026 → PNP 2027</div><h2>Move this card to PNP 2027</h2>
+    <div class="panel" style="margin:16px 0;padding:14px 16px;font-size:14px;max-height:160px;overflow:auto">${cardHTML(c,'front')}</div>
+    <label>Topic in PNP 2027</label>
+    <select id="mvTopic">${opts.map(t=>`<option ${t===def?'selected':''}>${esc(t)}</option>`).join('')}<option value="__new">+ New topic…</option></select>
+    <input id="mvNew" placeholder="Type the new topic" style="display:none;margin-top:8px">
+    <p class="muted" style="font-size:12.5px;margin-top:10px">Progress on this card is kept. ${t27.length?'Topics already in PNP 2027 are listed first.':'There are no PNP 2027 topics in this subject yet, so the card keeps its current topic.'}</p>
+    <div class="row"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn gold" style="background:var(--c)" onclick="doMove('${c.id}')">Move to PNP 2027</button></div></div>`);
+  $('#mvTopic').onchange=e=>{$('#mvNew').style.display=e.target.value==='__new'?'block':'none';};
+}
+function doMove(id){
+  const c=db.cards.find(x=>x.id===id); let t=$('#mvTopic').value; if(t==='__new')t=$('#mvNew').value.trim(); if(!t){toast('Pick a topic');return}
+  const marked=isMarked(c); c.prevTags=c.tags; c.tags=[t].concat(marked?['Marked']:[]); c.batch='PNP 2027'; c.moved=true;
+  save(); closeModal(); render(); toast('Moved to PNP 2027 · '+t);
+}
+function moveBack(id){ const c=db.cards.find(x=>x.id===id); if(!c)return; if(c.prevTags)c.tags=c.prevTags; delete c.prevTags; delete c.batch; delete c.moved; save(); render(); toast('Moved back to PNP 2026'); }
+function movedBar(){ const m=db.cards.filter(c=>c.moved); if(!m.length)return '';
+  return `<div class="moved-bar"><span><b>${m.length} card${m.length===1?'':'s'} moved to PNP 2027 on this device.</b> To apply these moves for every student, copy the list and send it to me.</span><button class="btn sm" onclick="copyMoves()">Copy list</button></div>`; }
+function copyMoves(){ const m=db.cards.filter(c=>c.moved);
+  const txt='PNP 2027 moves ('+m.length+')\n'+m.map(c=>cardKey(c)+' | '+topicsOf(c).filter(t=>t!=='Marked')[0]+' | '+plain(c.front).slice(0,70)).join('\n');
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast('List copied – paste it in the chat'),()=>{modal(`<h2>Copy this list</h2><textarea style="width:100%;height:260px;margin-top:12px">${esc(txt)}</textarea><div class="row"><button class="btn" onclick="closeModal()">Close</button></div>`);}); }
 function openRevise(deckId){
-  const all=[...new Set(cardsFor({deck:deckId}).flatMap(topicsOf))];
-  rv={deck:deckId,topics:new Set(all),n:20,order:'smart'};
+  const cs=cardsFor({deck:deckId});
+  const has=b=>cs.some(c=>batchOf(c)===b);
+  const tab=has('PNP 2027')?'PNP 2027':'PNP 2026';
+  rv={deck:deckId,tab,sel:new Set(cs.filter(c=>batchOf(c)===tab).flatMap(c=>topicsOf(c).map(t=>rvKey(c,t)))),n:20,order:'smart'};
   drawRevise();
 }
-function rvPool(){ return cardsFor({deck:rv.deck}).filter(c=>topicsOf(c).some(t=>rv.topics.has(t))); }
+function rvPool(){ return cardsFor({deck:rv.deck}).filter(c=>topicsOf(c).some(t=>rv.sel.has(rvKey(c,t)))); }
 function rvQueue(){
   const now=Date.now(), pool=rvPool();
   const due=pool.filter(c=>isDue(c,now)).sort((a,b)=>a.due-b.due);
@@ -737,9 +805,12 @@ function rvQueue(){
 }
 function drawRevise(){
   const d=deckOf(rv.deck), now=Date.now(), cs=cardsFor({deck:rv.deck});
-  const topicStats={}; cs.forEach(c=>topicsOf(c).forEach(t=>{const s=topicStats[t]||(topicStats[t]={n:0,due:0});s.n++;if(isDue(c,now))s.due++;}));
+  const bt={}; BATCHES.forEach(b=>bt[b]={n:0,sel:0});
+  cs.forEach(c=>bt[batchOf(c)]&&bt[batchOf(c)].n++);
+  [...rv.sel].forEach(k=>{const b=k.split('|')[0]; if(bt[b])bt[b].sel++;});
+  const topicStats={}; cs.filter(c=>batchOf(c)===rv.tab).forEach(c=>topicsOf(c).forEach(t=>{const s=topicStats[t]||(topicStats[t]={n:0,due:0});s.n++;if(isDue(c,now))s.due++;}));
   const topics=Object.keys(topicStats).sort((a,b)=>topicStats[b].n-topicStats[a].n||a.localeCompare(b));
-  rvTopicList=topics;
+  rvTopicList=topics; const selHere=topics.filter(t=>rv.sel.has(rv.tab+'|'+t)).length;
   const {pick,mix,poolSize}=rvQueue();
   const presets=[10,20,30,50];
   const custom=rv.n!=='all'&&!presets.includes(+rv.n);
@@ -749,16 +820,19 @@ function drawRevise(){
       <div class="counts">${presets.map(p=>`<button class="chip ${rv.n!=='all'&&+rv.n===p?'on':''}" onclick="rv.n=${p};drawRevise()">${p}</button>`).join('')}
         <button class="chip ${rv.n==='all'?'on':''}" onclick="rv.n='all';drawRevise()">All (${poolSize})</button>
         <input type="number" min="1" placeholder="Custom" value="${custom?rv.n:''}" onchange="rv.n=Math.max(1,parseInt(this.value)||1);drawRevise()"></div></div>
-    <div class="rv-sec"><div class="lbl"><span>Which topics? <span style="text-transform:none;letter-spacing:0;font-weight:600">(${rv.topics.size} of ${topics.length} selected)</span></span>
-      <span><button onclick="rv.topics=new Set(rvTopicList);drawRevise()">Select all</button> · <button onclick="rv.topics=new Set();drawRevise()">Clear</button></span></div>
-      <div class="topics-list">${topics.map((t,i)=>`<div class="topic ${rv.topics.has(t)?'on':''}" onclick="rvToggle(${i})"><span class="box"></span><span>${esc(t)}</span><span class="n">${topicStats[t].n}${topicStats[t].due?`<span class="d">${topicStats[t].due} due</span>`:''}</span></div>`).join('')}</div></div>
+    <div class="rv-sec"><div class="lbl"><span>Which topics?</span></div>
+      <div class="btabs">${BATCHES.map(b=>`<button class="${rv.tab===b?'on':''}" ${bt[b].n?'':'disabled'} onclick="rv.tab='${b}';drawRevise()"><span>${b}</span><small>${bt[b].n} cards${bt[b].sel?` · ${bt[b].sel} topic${bt[b].sel===1?'':'s'} picked`:''}</small></button>`).join('')}</div>
+      <div class="lbl" style="margin-top:12px"><span style="text-transform:none;letter-spacing:0;font-weight:600">${rv.tab}: ${selHere} of ${topics.length} topics selected</span>
+      <span><button onclick="rvTopicList.forEach(t=>rv.sel.add(rv.tab+'|'+t));drawRevise()">Select all</button> · <button onclick="rvTopicList.forEach(t=>rv.sel.delete(rv.tab+'|'+t));drawRevise()">Clear</button></span></div>
+      ${topics.length?'':`<p class="muted" style="font-size:13px">No ${rv.tab} cards in this subject yet.</p>`}
+      <div class="topics-list">${topics.map((t,i)=>`<div class="topic ${rv.sel.has(rv.tab+'|'+t)?'on':''}" onclick="rvToggle(${i})"><span class="box"></span><span>${esc(t)}</span><span class="n">${topicStats[t].n}${topicStats[t].due?`<span class="d">${topicStats[t].due} due</span>`:''}</span></div>`).join('')}</div></div>
     <div class="rv-sec"><div class="lbl"><span>Order</span></div>
       <div class="seg"><button class="${rv.order==='smart'?'on':''}" onclick="rv.order='smart';drawRevise()">Due first</button><button class="${rv.order==='shuffle'?'on':''}" onclick="rv.order='shuffle';drawRevise()">Shuffle</button></div></div>
     <div class="rv-sum"><span><b>${pick.length} question${pick.length===1?'':'s'}</b> · ${mix.due} due · ${mix.new} new${mix.extra?` · ${mix.extra} extra practice`:''}</span><span>≈ ${Math.max(1,Math.round(pick.length*8/60))} min</span></div>
     <div class="row"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn gold" style="background:var(--c)" onclick="rvStart()" ${pick.length?'':'disabled'}>Start revision →</button></div>
   </div>`);
 }
-function rvToggle(i){const t=rvTopicList[i]; rv.topics.has(t)?rv.topics.delete(t):rv.topics.add(t); drawRevise();}
+function rvToggle(i){const k=rv.tab+'|'+rvTopicList[i]; rv.sel.has(k)?rv.sel.delete(k):rv.sel.add(k); drawRevise();}
 function rvStart(){const {pick}=rvQueue(); if(!pick.length)return; closeModal(); beginQueue(pick.map(c=>c.id));}
 
 /* ============ study ============ */
@@ -828,7 +902,7 @@ function saveCard(){const f=$('#cf').value.trim(), b=$('#cb').value.trim(); if(!
 
 /* ============ boot ============ */
 /* Extra card packs (cards made from your notes, etc). Added on top of existing data — progress, stars and edits are kept. */
-const PACKS=['polity_notes_1.json'];
+const PACKS=['polity_notes_1.json','polity_recall_1.json'];
 async function applyPacks(target){
   target.packs=target.packs||[]; let added=0;
   for(const file of PACKS){
@@ -836,16 +910,16 @@ async function applyPacks(target){
     try{
       const pk=await (await fetch(file)).json(), now=Date.now();
       if(!target.decks.find(d=>d.id===pk.deck))continue;
-      pk.cards.forEach(c=>{target.cards.push({id:uid(),deckId:pk.deck,front:c.front,back:c.back,html:true,tags:c.tags.filter(t=>!CLEAN_TAGS.includes(t)),stage:c.stage||'',state:'new',s:0,d:5,due:now,reps:0,lapses:0,last:null});added++;});
+      pk.cards.forEach(c=>{target.cards.push({id:uid(),deckId:pk.deck,front:c.front,back:c.back,html:true,tags:c.tags.filter(t=>!CLEAN_TAGS.includes(t)),stage:c.stage||'',batch:c.batch||pk.batch||'',state:'new',s:0,d:5,due:now,reps:0,lapses:0,last:null});added++;});
       target.packs.push(file);
     }catch(e){ console.log('[recall] could not load pack',file,e); }
   }
   return added;
 }
-async function freshData(){const d=seed(); await addShippedDecks(d); await applyPacks(d); return d;}
+async function freshData(){const d=seed(); await addShippedDecks(d); await applyPacks(d); applyMoves(d); return d;}
 $('#resetBtn').onclick=async(e)=>{const b=e.currentTarget; if(!b.dataset.arm){b.dataset.arm=1;b.textContent='Tap again to reset everything';setTimeout(()=>{delete b.dataset.arm;b.textContent='Reset all progress'},3500);return}
   delete b.dataset.arm;b.textContent='Reset all progress'; db=await freshData();save();go('home');toast('All progress reset – every card is new again')};
-(async()=>{ if(!db){db=await freshData();save();} else { const n=await applyPacks(db); if(n){save(); setTimeout(()=>toast(`${n} new cards added to your deck`),400);} } const h0=(location.hash||'').slice(1); go(VIEWS.includes(h0)?h0:'home'); })();
+(async()=>{ if(!db){db=await freshData();save();} else { const n=await applyPacks(db); if(applyMoves(db))save(); if(n){save(); setTimeout(()=>toast(`${n} new cards added to your deck`),400);} } const h0=(location.hash||'').slice(1); go(VIEWS.includes(h0)?h0:'home'); })();
 </script>
 </body>
 </html>
