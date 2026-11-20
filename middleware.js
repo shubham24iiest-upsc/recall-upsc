@@ -59,6 +59,7 @@ export default async function middleware(request) {
   if (!password) return html('<h1>Portal locked</h1><p>No password has been set.</p>', 503);
 
   const url = new URL(request.url);
+  if (url.pathname === '/robots.txt') return; // public, tells search engines to stay away
   const good = await token(password);
 
   if (url.pathname === '/__logout') {
