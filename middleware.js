@@ -75,12 +75,12 @@ export default async function middleware(request) {
         headers: { Location: '/', 'Set-Cookie': `${COOKIE}=${good}; Path=/; Max-Age=${MAX_AGE}; HttpOnly; Secure; SameSite=Lax` },
       });
     }
-    return html(loginPage(true), 401);
+    return html(loginPage(true), 200);
   }
 
   if (readCookie(request, COOKIE) === good) return; // signed in: serve the site as normal
 
   // Not signed in: page requests get the password screen, everything else (data, images) is refused.
   const wantsPage = (request.headers.get('accept') || '').includes('text/html');
-  return wantsPage ? html(loginPage(false), 401) : new Response('Password required', { status: 401, headers: { 'cache-control': 'no-store' } });
+  return wantsPage ? html(loginPage(false), 200) : new Response('Password required', { status: 401, headers: { 'cache-control': 'no-store' } });
 }
