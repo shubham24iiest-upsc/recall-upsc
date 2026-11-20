@@ -341,6 +341,12 @@ body.focus .flash{min-height:calc(100vh - var(--hdr) - 260px)}
   .two,.frow,.topics-list{grid-template-columns:1fr}
   .flash{padding:50px 24px 30px}.flash .q{font-size:17.5px}
 }
+
+/* same, slightly larger text for questions and answers */
+.flash .q,.flash .a,.flash .a.rich{font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:22px;line-height:1.6}
+.flash .a *{font-family:inherit!important;font-size:inherit!important}
+.flash .a table{font-size:inherit}
+@media (max-width:820px){.flash .q,.flash .a,.flash .a.rich{font-size:19px}}
 </style>
 </head>
 <body>
