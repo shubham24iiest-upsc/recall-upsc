@@ -748,8 +748,15 @@ const MOVES_2027={
   'polity:1begeg29bp4':'Amendment',          // majority for amending provisions
   'polity:ziha34ai8x':'Fundamental Rights',  // judiciary as 'State' under Art. 12
   'polity:1mxqi7sz2y3':'Fundamental Rights', // Dicey's Rule of Law
+  'polity:6sezp9qvmh':'Union & States',       // Parliament's powers over creation of territories
+  'polity:2ci58l76st4':'Emergency',            // effects of emergencies on Centre-State relations
+  'polity:24ejc2f91of':'Federal System',       // Inter-State Council
+  'polity:1n3r82rxtpl':'Preamble',             // Preamble questions
+  'polity:sjdchh57t4':'Parliamentary System',  // image-only MCQ, answer (c)
+  'polity:3lzgop4mvq':'Emergency',             // conditions for National Emergency
+  'polity:f0sh48uw0l':'Amendment',             // types of majority statements
 };
-function cardKey(c){ const t=plain(c.front).replace(/\s+/g,' ').trim().toLowerCase().slice(0,300); let h1=0xdeadbeef,h2=0x41c6ce57;
+function cardKey(c){ let t=plain(c.front).replace(/\s+/g,' ').trim().toLowerCase().slice(0,300); if(!t){ const m=(c.front||'').match(/src="([^"]+)"/); t='img:'+(m?m[1].split('/').pop():''); } let h1=0xdeadbeef,h2=0x41c6ce57;
   for(let i=0;i<t.length;i++){const ch=t.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909); h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
   return (c.deckId+':'+(4294967296*(2097151&h2)+(h1>>>0)).toString(36)); }
